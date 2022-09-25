@@ -1,0 +1,9 @@
+{
+    "code": 2,
+    "name": "João Victor",
+    "cpf": "00011100011",
+    "password": "123456",
+    "date": "00110000",
+    "sex": "M",
+    "doctor": true
+}
