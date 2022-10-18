@@ -1,5 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_print
-import 'dart:io';
+import 'package:client/shared/connection_button.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -31,19 +30,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void connect() async {
-    String ip = "127.0.0.1";
-    int port = 3000;
-
-    print("connect");
-
-    Socket socket = await Socket.connect(ip, port);
-    print("connected to ${socket.remoteAddress.address}");
-
-    print(socket.toString());
-    // socket.listen((event) {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,11 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: connect,
-        tooltip: 'Increment',
-        child: Icon(Icons.wifi_off),
-      ),
+      floatingActionButton: ConnectionButton(),
     );
   }
 }

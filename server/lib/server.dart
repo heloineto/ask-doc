@@ -15,6 +15,8 @@ void run() async {
 List<Socket> clients = [];
 
 void handleConnection(Socket socket) {
+  print("handleConnection");
+
   socket.listen((event) {
     final String json = String.fromCharCodes(event);
     print(json);
