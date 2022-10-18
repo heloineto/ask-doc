@@ -1,3 +1,5 @@
+import 'package:client/shared/dropdown_field.dart';
+import 'package:client/shared/text_input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -13,7 +15,7 @@ class RegistrationScreen extends StatelessWidget {
         child: Center(
           child: Container(
             width: 600,
-            height: 386,
+            height: 700,
             padding: EdgeInsets.all(25),
             decoration: BoxDecoration(
               color: TW3Colors.zinc.shade700,
@@ -21,6 +23,23 @@ class RegistrationScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
+                TextInput(
+                  label: Text("Nome"),
+                ),
+                SizedBox(height: 25),
+                TextInput(
+                  label: Text("CPF"),
+                ),
+                SizedBox(height: 25),
+                TextInput(
+                  label: Text("Senha"),
+                ),
+                SizedBox(height: 25),
+                DropdownField(
+                  items: ["Maculino", "Feminino", "Outros"]
+                      .map((e) => DropdownMenuItem(child: Text(e), value: e))
+                      .toList(),
+                ),
                 Divider(height: 80),
                 SizedBox(
                   height: 52,
@@ -44,7 +63,7 @@ class RegistrationScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/');
                     },
                     child: Text(
-                      'Login',
+                      'Enviar',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

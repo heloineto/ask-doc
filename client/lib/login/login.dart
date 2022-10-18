@@ -13,7 +13,7 @@ class LoginScreen extends StatelessWidget {
         child: Center(
           child: Container(
             width: 600,
-            height: 386,
+            height: 390,
             padding: EdgeInsets.all(25),
             decoration: BoxDecoration(
               color: TW3Colors.zinc.shade700,
