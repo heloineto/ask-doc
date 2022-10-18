@@ -74,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
               child: Text(
                 'Cadastrar',
                 style: TextStyle(
-                  fontSize: 28,
+                  fontSize: 25,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
                 ),
