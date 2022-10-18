@@ -32,10 +32,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   void connect() async {
-    String ip = "127.0.0.0";
-    int port = 5566;
+    String ip = "127.0.0.1";
+    int port = 3000;
+
+    print("connect");
 
     Socket socket = await Socket.connect(ip, port);
+    print("connected to ${socket.remoteAddress.address}");
 
     print(socket.toString());
     // socket.listen((event) {});

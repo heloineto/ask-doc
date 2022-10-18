@@ -1,12 +1,28 @@
 import 'dart:io';
 
 void run() async {
-  String ip = "127.0.0.1";
-  int port = 8000;
+  final ip = "127.0.0.1";
+  int port = 3000;
 
-  Socket socket = await Socket.connect(ip, port);
+  final server = await ServerSocket.bind(ip, port);
+  print("Server is running on $ip:${port.toString()}");
 
-  print(socket.toString());
+  server.listen((Socket socket) {
+    handleConnection(socket);
+  });
+}
 
-  socket.listen((event) {});
+List<Socket> clients = [];
+
+void handleConnection(Socket socket) {
+  socket.listen((event) {
+    final String json = String.fromCharCodes(event);
+    print(json);
+  }, onError: (error) {
+    print(error);
+    socket.close();
+  }, onDone: () {
+    print("[INFO]: Socket closed");
+    socket.close();
+  });
 }
