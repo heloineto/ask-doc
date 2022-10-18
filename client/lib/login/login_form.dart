@@ -1,4 +1,4 @@
-import 'package:client/login/text_input.dart';
+import 'package:client/shared/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -47,34 +47,6 @@ class _LoginFormState extends State<LoginForm> {
                 'Login',
                 style: TextStyle(
                   fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1,
-                ),
-              ),
-            ),
-          ),
-          Divider(height: 80),
-          SizedBox(
-            height: 52,
-            width: 250,
-            child: TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    return Colors.white;
-                  },
-                ),
-                backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
-                    return TW3Colors.blue;
-                  },
-                ),
-              ),
-              onPressed: () {},
-              child: Text(
-                'Cadastrar',
-                style: TextStyle(
-                  fontSize: 25,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
                 ),

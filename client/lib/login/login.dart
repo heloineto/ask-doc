@@ -19,7 +19,43 @@ class LoginScreen extends StatelessWidget {
               color: TW3Colors.zinc.shade700,
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            child: LoginForm(),
+            child: Column(
+              children: [
+                LoginForm(),
+                Divider(height: 80),
+                SizedBox(
+                  height: 52,
+                  width: 250,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          return Colors.white;
+                        },
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          return TW3Colors.blue;
+                        },
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/registration');
+                    },
+                    child: Text(
+                      'Cadastrar',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
