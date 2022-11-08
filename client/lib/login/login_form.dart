@@ -42,7 +42,9 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/home');
+              },
               child: Text(
                 'Login',
                 style: TextStyle(

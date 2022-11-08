@@ -1,3 +1,4 @@
+import 'package:client/shared/date_Field.dart';
 import 'package:client/shared/dropdown_field.dart';
 import 'package:client/shared/text_input.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,8 +40,50 @@ class RegistrationScreen extends StatelessWidget {
                   items: ["Maculino", "Feminino", "Outros"]
                       .map((e) => DropdownMenuItem(child: Text(e), value: e))
                       .toList(),
+                  label: Text("Sexo"),
                 ),
-                Divider(height: 80),
+                SizedBox(height: 25),
+                DropdownField(
+                  items: ["Medico", "Paciente"]
+                      .map((e) => DropdownMenuItem(child: Text(e), value: e))
+                      .toList(),
+                  label: Text("Status"),
+                ),
+                SizedBox(height: 25),
+                DateField(label: Text("Nascimento")),
+                SizedBox(height: 25),
+                SizedBox(
+                  height: 52,
+                  width: double.infinity,
+                  child: TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          return Colors.white;
+                        },
+                      ),
+                      backgroundColor:
+                          MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          return TW3Colors.emerald;
+                        },
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/');
+                    },
+                    child: Text(
+                      'Enviar',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ),
+                Divider(height: 70),
                 SizedBox(
                   height: 52,
                   width: 250,
@@ -63,7 +106,7 @@ class RegistrationScreen extends StatelessWidget {
                       Navigator.pushNamed(context, '/');
                     },
                     child: Text(
-                      'Enviar',
+                      'Voltar',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
