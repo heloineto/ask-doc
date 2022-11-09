@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:convert';
 import 'package:server/handlers/register.dart';
+import 'package:server/handlers/login.dart';
 
 var request = {
-  "code": 1,
+  "code": 2,
   "name": "João Victor",
   "cpf": "00011100011",
   "password": "123456",
@@ -14,6 +15,7 @@ var request = {
 
 var handlers = {
   1: register,
+  2: login,
 };
 
 void run() async {
