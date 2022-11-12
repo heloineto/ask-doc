@@ -1,16 +1,16 @@
 import 'package:client/shared/date_Field.dart';
 import 'package:client/shared/dropdown_field.dart';
 import 'package:client/shared/text_input.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:client/shared/main_scaffold.dart';
 
 class RegistrationScreen extends StatelessWidget {
   const RegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MainScaffold(
       body: Container(
         color: TW3Colors.zinc.shade900,
         child: Center(

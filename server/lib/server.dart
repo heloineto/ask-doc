@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:server/handlers/register.dart';
 import 'package:server/handlers/login.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
 var request = {
   "code": 2,
@@ -19,17 +21,15 @@ var handlers = {
 };
 
 void run() async {
-  chooseHandle();
-  //TODO: get ip & port from console
-  // final ip = "127.0.0.1";
-  // int port = 3000;
+  final ip = "127.0.0.1";
+  int port = 3000;
 
-  // final server = await ServerSocket.bind(ip, port);
-  // print("Server is running on $ip:${port.toString()}");
+  final server = await ServerSocket.bind(ip, port);
+  print("Server is running on $ip:${port.toString()}");
 
-  // server.listen((Socket socket) {
-  //   handleConnection(socket);
-  // });
+  server.listen((Socket socket) {
+    handleConnection(socket);
+  });
 }
 
 List<Socket> clients = [];
@@ -53,11 +53,14 @@ void chooseHandle() {
 }
 
 void handleConnection(Socket socket) {
-  print("handleConnection");
+  print(
+    "Server: Connection from ${socket.remoteAddress.address}:${socket.remotePort}",
+  );
 
   socket.listen((event) {
-    // final String json = String.fromCharCodes(event);
-    // final request = jsonDecode(json);
+    String str = String.fromCharCodes(event);
+    print("Recieved $str");
+    //  request = jsonDecode(json);
   }, onError: (error) {
     print(error);
     socket.close();
