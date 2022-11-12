@@ -1,4 +1,5 @@
 import 'package:client/login/login_form.dart';
+import 'package:client/shared/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
@@ -7,7 +8,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MainScaffold(
       body: Container(
         color: TW3Colors.zinc.shade900,
         child: Center(

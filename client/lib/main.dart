@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Ask Doc',
+      debugShowCheckedModeBanner: false,
       routes: routes,
       theme: ThemeData.dark().copyWith(
         primaryColor: TW3Colors.green,
