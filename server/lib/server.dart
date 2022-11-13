@@ -1,51 +1,57 @@
-import 'dart:io';
 import 'dart:convert';
-import 'package:server/handlers/register.dart';
-import 'package:server/handlers/login.dart';
 import 'dart:io';
-import 'dart:typed_data';
-
-var request = {
-  "code": 2,
-  "name": "João Victor",
-  "cpf": "00011100011",
-  "password": "123456",
-  "birthday": "00110000",
-  "sex": "M",
-  "doctor": true
-};
-
-var handlers = {
-  1: register,
-  2: login,
-};
+import 'package:server/handlers.dart';
+import 'package:server/utils/print.dart';
+import 'package:server/utils/validations.dart';
 
 void run() async {
-  final ip = "127.0.0.1";
-  int port = 3000;
+  print("Insert IP");
+  String? ip = stdin.readLineSync();
+
+  // final ip = "127.0.0.1";
+  // int port = 3000;
+
+  if (ip == null || ip == "") {
+    return;
+  }
+  if (!validateIp(ip)) {
+    printError("Error: Invalid Ip Address");
+    return;
+  }
+
+  print("Port");
+  String? portStr = stdin.readLineSync();
+
+  if (portStr == null || portStr == "") {
+    return;
+  }
+  if (!validatePort(portStr)) {
+    printError("Error: Invalid Port");
+    return;
+  }
+
+  int port = int.parse(portStr);
 
   final server = await ServerSocket.bind(ip, port);
-  print("Server is running on $ip:${port.toString()}");
+  printSuccess("Running on $ip:$portStr");
 
   server.listen((Socket socket) {
     handleConnection(socket);
   });
 }
 
-List<Socket> clients = [];
-
-void chooseHandle() {
+void chooseHandle(dynamic request) {
   int? code = request["code"] as int?;
 
   if (code == null) {
-    // Error: no code was provided
+    printError("Error: no code was provided");
     return;
   }
 
   Function? handler = handlers[code];
 
   if (handler == null) {
-    // Error: unknown code provided
+    printError("Error: unknown code provided");
     return;
   }
 
@@ -53,19 +59,22 @@ void chooseHandle() {
 }
 
 void handleConnection(Socket socket) {
-  print(
-    "Server: Connection from ${socket.remoteAddress.address}:${socket.remotePort}",
-  );
+  String sockedId = '${socket.remoteAddress.address}:${socket.remotePort}';
+
+  printSuccess("Connection Established ($sockedId)");
 
   socket.listen((event) {
-    String str = String.fromCharCodes(event);
-    print("Recieved $str");
-    //  request = jsonDecode(json);
+    String strEvent = String.fromCharCodes(event);
+    printInfo("Received event: $strEvent");
+
+    var request = jsonDecode(strEvent);
+
+    chooseHandle(request);
   }, onError: (error) {
-    print(error);
+    printError("Socket Error: $error ($sockedId)");
     socket.close();
   }, onDone: () {
-    print("[INFO]: Socket closed");
+    print("Socket closed ($sockedId)");
     socket.close();
   });
 }
