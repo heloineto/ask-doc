@@ -1,80 +1,38 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:server/handlers.dart';
-import 'package:server/utils/print.dart';
-import 'package:server/utils/validations.dart';
+import 'package:server/utils/input.dart';
+import 'package:server/utils/output.dart';
 
 void run() async {
-  print("Insert IP");
-  String? ip = stdin.readLineSync();
-
-  // final ip = "127.0.0.1";
-  // int port = 3000;
-
-  if (ip == null || ip == "") {
-    return;
-  }
-  if (!validateIp(ip)) {
-    printError("Error: Invalid Ip Address");
-    return;
-  }
-
-  print("Port");
-  String? portStr = stdin.readLineSync();
-
-  if (portStr == null || portStr == "") {
-    return;
-  }
-  if (!validatePort(portStr)) {
-    printError("Error: Invalid Port");
-    return;
-  }
-
-  int port = int.parse(portStr);
+  String ip = getIp();
+  int port = getPort();
 
   final server = await ServerSocket.bind(ip, port);
-  printSuccess("Running on $ip:$portStr");
+  printReady("started server on $ip:$port");
 
   server.listen((Socket socket) {
     handleConnection(socket);
   });
 }
 
-void chooseHandle(dynamic request) {
-  int? code = request["code"] as int?;
-
-  if (code == null) {
-    printError("Error: no code was provided");
-    return;
-  }
-
-  Function? handler = handlers[code];
-
-  if (handler == null) {
-    printError("Error: unknown code provided");
-    return;
-  }
-
-  handler(request);
-}
-
 void handleConnection(Socket socket) {
-  String sockedId = '${socket.remoteAddress.address}:${socket.remotePort}';
+  String sockedId = '${socket.remoteAddress.address}:${socket.port}';
 
-  printSuccess("Connection Established ($sockedId)");
+  printReady("connection established ($sockedId)");
 
   socket.listen((event) {
     String strEvent = String.fromCharCodes(event);
-    printInfo("Received event: $strEvent");
+    printEvent("received: $strEvent");
 
     var request = jsonDecode(strEvent);
 
     chooseHandle(request);
   }, onError: (error) {
-    printError("Socket Error: $error ($sockedId)");
+    printError("socket error: $error ($sockedId)");
     socket.close();
   }, onDone: () {
-    print("Socket closed ($sockedId)");
+    printInfo("socket closed ($sockedId)");
     socket.close();
   });
 }
