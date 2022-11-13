@@ -1,18 +1,15 @@
-import 'package:client/services/client.dart';
+import 'package:client/services/client_service.dart';
 import 'package:client/shared/button.dart';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:client/utils/validations.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:client/shared/text_input.dart';
 import 'package:flutter/services.dart' as services;
 
 class ConnectionDialog extends StatefulWidget {
-  final void Function(String, int) connect;
-  final bool isConnected;
-
-  const ConnectionDialog(
-      {super.key, required this.connect, required this.isConnected});
+  const ConnectionDialog({super.key});
 
   @override
   State<ConnectionDialog> createState() => _ConnectionDialogState();
@@ -43,15 +40,34 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
       return;
     }
 
-    widget.connect(ip.text, int.parse(port.text));
+    context.read<ClientService>().connect(
+          ip: ip.text,
+          port: int.parse(port.text),
+          onConnect: () => showSnackBar(
+            context,
+            "Connected",
+            backgroundColor: TW3Colors.green.shade500,
+          ),
+          onDisconnect: () => showSnackBar(
+            context,
+            "Disconnect",
+            backgroundColor: TW3Colors.red.shade500,
+          ),
+        );
+
+    Navigator.pop(context);
   }
 
   void disconnect() {
+    context.read<ClientService>().disconnect();
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    bool isConnected =
+        context.watch<ClientService>().status == ConnectionStatus.connected;
+
     return AlertDialog(
       title: Text(
         'Connection Panel',
@@ -75,15 +91,16 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
         ],
       ),
       actions: [
-        Button(
-          onPressed: widget.isConnected ? disconnect : null,
-          twColor: TW3Colors.red,
-          child: Text("Disconnect"),
-        ),
-        Button(
-          onPressed: widget.isConnected ? null : submit,
-          child: Text("Connect"),
-        ),
+        isConnected
+            ? Button(
+                onPressed: disconnect,
+                twColor: TW3Colors.red,
+                child: Text("Disconnect"),
+              )
+            : Button(
+                onPressed: submit,
+                child: Text("Connect"),
+              ),
       ],
     );
   }

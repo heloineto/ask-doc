@@ -29,5 +29,5 @@ void printInfo(String message, {String? id}) {
 }
 
 void printEvent(String message, {String? id}) {
-  printThing(message, pen: AnsiPen()..magenta(), verb: "eve", id: id);
+  printThing(message, pen: AnsiPen()..magenta(), verb: "event", id: id);
 }
