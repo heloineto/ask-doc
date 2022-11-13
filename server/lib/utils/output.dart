@@ -1,21 +1,33 @@
 import 'package:ansicolor/ansicolor.dart';
 
-void printError(String message) {
-  AnsiPen pen = AnsiPen()..red();
-  print('${pen("error")} - $message');
+void printThing(
+  String message, {
+  String? id,
+  required AnsiPen pen,
+  required String verb,
+}) {
+  AnsiPen blackPen = AnsiPen()..black();
+
+  if (id == null) {
+    print('${pen(verb)} - $message');
+    return;
+  }
+
+  print('${pen(verb)} - $message ${blackPen('($id)')}');
 }
 
-void printReady(String message) {
-  AnsiPen pen = AnsiPen()..green();
-  print('${pen("ready")} - $message');
+void printError(String message, {String? id}) {
+  printThing(message, pen: AnsiPen()..red(), verb: "error", id: id);
 }
 
-void printInfo(String message) {
-  AnsiPen pen = AnsiPen()..blue();
-  print('${pen("info")} - $message');
+void printReady(String message, {String? id}) {
+  printThing(message, pen: AnsiPen()..green(), verb: "ready", id: id);
 }
 
-void printEvent(String message) {
-  AnsiPen pen = AnsiPen()..magenta();
-  print('${pen("event")} - $message');
+void printInfo(String message, {String? id}) {
+  printThing(message, pen: AnsiPen()..blue(), verb: "info", id: id);
+}
+
+void printEvent(String message, {String? id}) {
+  printThing(message, pen: AnsiPen()..magenta(), verb: "eve", id: id);
 }

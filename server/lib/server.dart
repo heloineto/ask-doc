@@ -19,20 +19,20 @@ void run() async {
 void handleConnection(Socket socket) {
   String sockedId = '${socket.remoteAddress.address}:${socket.port}';
 
-  printReady("connection established ($sockedId)");
+  printReady("connection established", id: sockedId);
 
   socket.listen((event) {
     String strEvent = String.fromCharCodes(event);
-    printEvent("received: $strEvent");
+    printEvent("received: $strEvent", id: sockedId);
 
     var request = jsonDecode(strEvent);
 
     chooseHandle(request);
   }, onError: (error) {
-    printError("socket error: $error ($sockedId)");
+    printError("socket error: $error", id: sockedId);
     socket.close();
   }, onDone: () {
-    printInfo("socket closed ($sockedId)");
+    printInfo("socket closed", id: sockedId);
     socket.close();
   });
 }

@@ -30,8 +30,8 @@ class _ConnectionButtonState extends State<ConnectionButton> {
 
   @override
   Widget build(BuildContext context) {
-    bool isConnected =
-        Provider.of<Client>(context).status == ConnectionStatus.connected;
+    bool isConnected = false;
+    // Provider.of<Client>(context).status == ConnectionStatus.connected;
 
     return FloatingActionButton(
       onPressed: () {
