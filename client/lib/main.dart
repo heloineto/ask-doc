@@ -1,4 +1,5 @@
 import 'package:client/routes.dart';
+import 'package:client/services/Client.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      // create: () =>  ,
+      create: (context) => Client(),
       child: MaterialApp(
         title: 'Ask Doc',
         debugShowCheckedModeBanner: false,

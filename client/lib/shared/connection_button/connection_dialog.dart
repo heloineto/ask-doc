@@ -1,4 +1,6 @@
 import 'package:client/shared/button.dart';
+import 'package:client/utils/show_snack_bar.dart';
+import 'package:client/utils/validations.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:client/shared/text_input.dart';
@@ -26,25 +28,46 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
           color: TW3Colors.slate.shade100,
         ),
       ),
-      content: Container(
-        child: Column(
-          children: [
-            TextInput(label: Text("IP"), onChanged: (value) => ip = value),
-            SizedBox(height: 10),
-            TextInput(
-              label: Text("Port"),
-              onChanged: (value) => port = value,
-              inputFormatters: [
-                services.FilteringTextInputFormatter.digitsOnly
-              ],
-            ),
-          ],
-        ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextInput(label: Text("IP"), onChanged: (value) => ip = value),
+          SizedBox(height: 10),
+          TextInput(
+            label: Text("Port"),
+            onChanged: (value) => port = value,
+            inputFormatters: [services.FilteringTextInputFormatter.digitsOnly],
+          ),
+        ],
       ),
       actions: [
         Button(
+          onPressed: () {},
+          twColor: TW3Colors.red,
+          child: Text("Disconnect"),
+        ),
+        Button(
           onPressed: () {
-            print('$ip $port');
+            if (!validateIp(ip)) {
+              showSnackBar(
+                context,
+                "Invalid IP Address",
+                backgroundColor: TW3Colors.red.shade500,
+              );
+
+              return;
+            }
+
+            if (!validatePort(port)) {
+              showSnackBar(
+                context,
+                "Invalid Port",
+                backgroundColor: TW3Colors.red.shade500,
+              );
+
+              return;
+            }
+
             widget.connect(ip, int.parse(port));
           },
           child: Text("Connect"),

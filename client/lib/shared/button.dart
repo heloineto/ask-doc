@@ -36,7 +36,7 @@ class Button extends StatelessWidget {
           ),
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
-              return TW3Colors.red.shade400;
+              return twColor.shade400;
             },
           ),
         ),

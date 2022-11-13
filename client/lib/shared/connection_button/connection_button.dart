@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:client/services/Client.dart';
 import 'package:client/shared/connection_button/connection_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:provider/provider.dart';
 
 enum ConnectionStatus { connected, loading, disconnected }
 
@@ -15,50 +17,18 @@ class ConnectionButton extends StatefulWidget {
 
 class _ConnectionButtonState extends State<ConnectionButton> {
   ConnectionStatus connectionStatus = ConnectionStatus.disconnected;
-  Socket? socket;
 
   void connect(String ip, int port) async {
-    socket = await Socket.connect(ip, port);
-
-    print("connected to ${socket!.remoteAddress.address}");
-
-    setState(() {
-      connectionStatus = ConnectionStatus.connected;
-    });
-
-    print(socket.toString());
-
-    socket!.handleError((onError) {
-      print("SOCKET ERROR");
-      setState(() {
-        connectionStatus = ConnectionStatus.disconnected;
-      });
-    });
-
-    socket!.listen(
-      (event) {},
-      cancelOnError: true,
-      onError: (error) {
-        print("SOCKET ERROR $error");
-
-        setState(() {
-          connectionStatus = ConnectionStatus.disconnected;
-        });
-
-        socket!.destroy();
-      },
-      onDone: () {
-        print("SOCKET DONE");
-
-        setState(() {
-          connectionStatus = ConnectionStatus.disconnected;
-        });
-
-        socket!.destroy();
-      },
-    );
-
-    socket!.write("Hello World!");
+    context.read<Client>().connect(
+          ip: ip,
+          port: port,
+          onConnect: () => setState(
+            () => connectionStatus = ConnectionStatus.connected,
+          ),
+          onDisconnect: () => setState(
+            () => connectionStatus = ConnectionStatus.disconnected,
+          ),
+        );
   }
 
   @override
