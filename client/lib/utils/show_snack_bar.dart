@@ -16,3 +16,21 @@ void showSnackBar(
     ),
   );
 }
+
+void showSnackBarWithKey(
+  GlobalKey<ScaffoldMessengerState> scaffoldKey,
+  String message, {
+  Color? backgroundColor,
+}) {
+  final ScaffoldMessengerState? scaffold = scaffoldKey.currentState;
+
+  scaffold?.showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(color: TW3Colors.slate.shade100),
+      ),
+      backgroundColor: backgroundColor,
+    ),
+  );
+}

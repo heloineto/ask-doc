@@ -6,18 +6,21 @@ import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ClientService(),
+      create: (context) => ClientService(scaffoldKey: _scaffoldKey),
       child: MaterialApp(
         title: 'Ask Doc',
+        scaffoldMessengerKey: _scaffoldKey,
         debugShowCheckedModeBanner: false,
         routes: routes,
         theme: ThemeData.dark().copyWith(
