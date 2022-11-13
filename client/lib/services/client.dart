@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
+enum ConnectionStatus { connected, loading, disconnected }
+
 class Client extends ChangeNotifier {
   Socket? socket;
+  ConnectionStatus status = ConnectionStatus.disconnected;
 
   Client();
 
@@ -15,6 +18,7 @@ class Client extends ChangeNotifier {
     socket = await Socket.connect(ip, port);
 
     if (onConnect != null) onConnect();
+    status = ConnectionStatus.connected;
     debugPrint("Client: Connected to ${socket!.remoteAddress.address}");
 
     socket!.listen(
@@ -28,9 +32,17 @@ class Client extends ChangeNotifier {
         debugPrint("Client: Socket done");
 
         if (onDisconnect != null) onDisconnect();
+
         socket!.destroy();
       },
     );
+
+    notifyListeners();
+
+    socket!.done.then((value) {
+      status = ConnectionStatus.disconnected;
+      notifyListeners();
+    });
   }
 
   void login() {}

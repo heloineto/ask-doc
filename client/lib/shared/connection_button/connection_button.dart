@@ -1,12 +1,9 @@
-import 'dart:io';
-import 'package:client/services/Client.dart';
+import 'package:client/services/client.dart';
 import 'package:client/shared/connection_button/connection_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:provider/provider.dart';
-
-enum ConnectionStatus { connected, loading, disconnected }
 
 class ConnectionButton extends StatefulWidget {
   const ConnectionButton({super.key});
@@ -16,30 +13,34 @@ class ConnectionButton extends StatefulWidget {
 }
 
 class _ConnectionButtonState extends State<ConnectionButton> {
-  ConnectionStatus connectionStatus = ConnectionStatus.disconnected;
+  ConnectionStatus status = ConnectionStatus.disconnected;
 
   void connect(String ip, int port) async {
     context.read<Client>().connect(
           ip: ip,
           port: port,
           onConnect: () => setState(
-            () => connectionStatus = ConnectionStatus.connected,
+            () => status = ConnectionStatus.connected,
           ),
           onDisconnect: () => setState(
-            () => connectionStatus = ConnectionStatus.disconnected,
+            () => status = ConnectionStatus.disconnected,
           ),
         );
   }
 
   @override
   Widget build(BuildContext context) {
-    bool isConnected = connectionStatus == ConnectionStatus.connected;
+    bool isConnected =
+        Provider.of<Client>(context).status == ConnectionStatus.connected;
 
     return FloatingActionButton(
       onPressed: () {
         showDialog(
           context: context,
-          builder: (context) => ConnectionDialog(connect: connect),
+          builder: (context) => ConnectionDialog(
+            connect: connect,
+            isConnected: isConnected,
+          ),
         );
       },
       tooltip: isConnected ? 'Connect' : 'Disconnect',
