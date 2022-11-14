@@ -16,8 +16,8 @@ class ConnectionDialog extends StatefulWidget {
 }
 
 class _ConnectionDialogState extends State<ConnectionDialog> {
-  final ip = TextEditingController(text: "127.0.0.1");
-  final port = TextEditingController(text: "3000");
+  final ip = TextEditingController();
+  final port = TextEditingController();
 
   void submit() {
     if (!validateIp(ip.text)) {
@@ -62,7 +62,7 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
       title: Text(
         'Connection Panel',
         style: TextStyle(
-          color: TW3Colors.zinc.shade100,
+          color: TW3Colors.slate.shade100,
         ),
       ),
       content: Column(
