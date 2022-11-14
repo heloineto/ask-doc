@@ -1,24 +1,33 @@
 import 'package:pocketbase/pocketbase.dart';
+import 'package:server/utils/output.dart';
 
 final client = PocketBase('http://127.0.0.1:8090');
 
-Future<void> register(Map<String, dynamic> request) async {
+Future<Map> register(Map request) async {
   final body = <String, dynamic>{
     "name": request["name"],
     "cpf": request["cpf"],
     "birthday": request["birthday"],
     "sex": request["sex"],
-    "stats": request["doctor"],
+    "stats": request["stats"],
     "password": request["password"]
   };
 
+  print("body: $body");
+
   try {
     await client.records.create('users', body: body);
+
+    return {
+      "code": 101,
+      "success": true,
+    };
   } catch (error) {
-    print("Error: Register\n\n${error.toString()}\n\n");
+    printError("register failed $error\n\n");
 
-    return;
+    return {
+      "code": 101,
+      "success": false,
+    };
   }
-
-  print("Success: Register\n\n");
 }

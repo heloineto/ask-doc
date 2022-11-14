@@ -10,17 +10,20 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ClientService(scaffoldKey: _scaffoldKey),
+      create: (context) =>
+          ClientService(scaffoldKey: scaffoldKey, navigatorKey: navigatorKey),
       child: MaterialApp(
         title: 'Ask Doc',
-        scaffoldMessengerKey: _scaffoldKey,
+        scaffoldMessengerKey: scaffoldKey,
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         routes: routes,
         theme: ThemeData.dark().copyWith(

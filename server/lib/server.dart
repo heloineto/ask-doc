@@ -24,13 +24,24 @@ void handleConnection(Socket socket) {
 
   printReady("connection established", id: sockedId);
 
-  socket.listen((event) {
-    String strEvent = String.fromCharCodes(event);
-    printEvent("received: $strEvent", id: sockedId);
+  socket.listen((event) async {
+    String strRequest = String.fromCharCodes(event);
+    printEvent("request: $strRequest", id: sockedId);
 
-    var request = jsonDecode(strEvent);
+    var request = jsonDecode(strRequest);
 
-    chooseHandle(request);
+    var response = await chooseHandle(request);
+
+    if (response == null) {
+      printError("response is null");
+      return;
+    }
+
+    var strResponse = json.encode(response);
+
+    printEvent("response: $strResponse", id: sockedId);
+
+    socket.write(strResponse);
   }, onError: (error) {
     printError("socket error: $error", id: sockedId);
     socket.close();

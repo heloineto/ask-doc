@@ -4,23 +4,25 @@ import 'package:server/utils/output.dart';
 
 var handlers = {
   1: register,
-  2: login,
+  3: login,
 };
 
-void chooseHandle(dynamic request) {
+Future<Map?> chooseHandle(dynamic request) async {
   int? code = request["code"] as int?;
 
   if (code == null) {
     printError("no code was provided");
-    return;
+    return null;
   }
 
-  Function? handler = handlers[code];
+  var handler = handlers[code];
 
   if (handler == null) {
     printError("unknown code provided");
-    return;
+    return null;
   }
 
-  handler(request);
+  var response = await handler(request);
+
+  return response;
 }

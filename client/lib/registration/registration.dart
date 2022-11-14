@@ -1,6 +1,4 @@
-import 'package:client/shared/date_Field.dart';
-import 'package:client/shared/dropdown_field.dart';
-import 'package:client/shared/text_input.dart';
+import 'package:client/registration/registration_form.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:client/shared/main_scaffold.dart';
@@ -26,71 +24,7 @@ class RegistrationScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Column(
-                    children: [
-                      TextInput(
-                        label: Text("Nome"),
-                      ),
-                      SizedBox(height: 25),
-                      TextInput(
-                        label: Text("CPF"),
-                      ),
-                      SizedBox(height: 25),
-                      TextInput(
-                        label: Text("Senha"),
-                      ),
-                      SizedBox(height: 25),
-                      DropdownField(
-                        items: ["Masculino", "Feminino", "Outros"]
-                            .map((e) =>
-                                DropdownMenuItem(value: e, child: Text(e)))
-                            .toList(),
-                        label: Text("Sexo"),
-                      ),
-                      SizedBox(height: 25),
-                      DropdownField(
-                        items: ["Medico", "Paciente"]
-                            .map((e) =>
-                                DropdownMenuItem(value: e, child: Text(e)))
-                            .toList(),
-                        label: Text("Status"),
-                      ),
-                      SizedBox(height: 25),
-                      DateField(label: Text("Nascimento")),
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  SizedBox(
-                    height: 52,
-                    width: double.infinity,
-                    child: TextButton(
-                      style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                            return Colors.white;
-                          },
-                        ),
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                            return TW3Colors.emerald;
-                          },
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/');
-                      },
-                      child: Text(
-                        'Enviar',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1,
-                        ),
-                      ),
-                    ),
-                  ),
+                  RegistrationForm(),
                   Divider(height: 70),
                   SizedBox(
                     height: 52,

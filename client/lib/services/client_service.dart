@@ -2,15 +2,117 @@ import 'dart:io';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'dart:convert';
 
 enum ConnectionStatus { connected, loading, disconnected }
+
+void login(
+  request, {
+  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
+  required GlobalKey<NavigatorState> navigatorKey,
+}) {
+  if (!request["status"]) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "Credenciais erradas",
+      backgroundColor: TW3Colors.red.shade500,
+    );
+
+    return;
+  }
+
+  var navigatorState = navigatorKey.currentState;
+
+  if (navigatorState == null) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "navigatorState é null",
+      backgroundColor: TW3Colors.red.shade500,
+    );
+    return;
+  }
+
+  navigatorState.pushNamed('/home');
+}
+
+void register(
+  request, {
+  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
+  required GlobalKey<NavigatorState> navigatorKey,
+}) {
+  if (!request["success"]) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "Erro ao registrar",
+      backgroundColor: TW3Colors.red.shade500,
+    );
+
+    return;
+  }
+
+  var navigatorState = navigatorKey.currentState;
+
+  if (navigatorState == null) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "navigatorState é null",
+      backgroundColor: TW3Colors.red.shade500,
+    );
+    return;
+  }
+
+  navigatorState.pushNamed('/');
+  showSnackBarWithKey(
+    scaffoldKey,
+    "Registrado com sucesso",
+    backgroundColor: TW3Colors.green.shade500,
+  );
+}
+
+var handlers = {
+  103: login,
+  101: register,
+};
 
 class ClientService extends ChangeNotifier {
   Socket? socket;
   ConnectionStatus status = ConnectionStatus.disconnected;
   final GlobalKey<ScaffoldMessengerState> scaffoldKey;
+  final GlobalKey<NavigatorState> navigatorKey;
 
-  ClientService({required this.scaffoldKey});
+  ClientService({required this.scaffoldKey, required this.navigatorKey});
+
+  void chooseHandle(Map request) {
+    print("object $request");
+
+    int? code = request["code"] as int?;
+
+    if (code == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: no code was provided",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+      return;
+    }
+
+    var handler = handlers[code];
+
+    if (handler == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: unknown code provided",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+      return;
+    }
+
+    handler(
+      request,
+      navigatorKey: navigatorKey,
+      scaffoldKey: scaffoldKey,
+    );
+  }
 
   void connect({
     required String ip,
@@ -42,7 +144,19 @@ class ClientService extends ChangeNotifier {
     debugPrint("Client: Connected to ${socket!.remoteAddress.address}");
 
     socket!.listen(
-      (event) {},
+      (event) {
+        String strEvent = String.fromCharCodes(event);
+
+        // showSnackBarWithKey(
+        //   scaffoldKey,
+        //   "RECIEVED: $strEvent",
+        //   backgroundColor: TW3Colors.blue.shade500,
+        // );
+
+        var response = jsonDecode(strEvent);
+
+        chooseHandle(response);
+      },
       onError: (error) {
         debugPrint("Client: Socket error: $error");
 
@@ -76,7 +190,50 @@ class ClientService extends ChangeNotifier {
     await socket!.close();
   }
 
-  void login() {}
+  void login({required String cpf, required String password}) {
+    if (socket == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: Socket is null",
+        backgroundColor: TW3Colors.red.shade500,
+      );
 
-  void register() {}
+      return;
+    }
+
+    var request = {"code": 3, "cpf": cpf, "password": password};
+
+    socket!.write(json.encode(request));
+  }
+
+  void register({
+    required String name,
+    required String cpf,
+    required String password,
+    required String birthday,
+    required String sex,
+    required bool stats,
+  }) {
+    if (socket == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: Socket is null",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+
+      return;
+    }
+
+    var request = {
+      "code": 1,
+      "name": name,
+      "cpf": cpf,
+      "password": password,
+      "birthday": birthday,
+      "sex": sex,
+      "stats": stats
+    };
+
+    socket!.write(json.encode(request));
+  }
 }

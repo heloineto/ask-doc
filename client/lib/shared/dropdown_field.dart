@@ -24,9 +24,7 @@ class DropdownField extends StatelessWidget {
         hintText: hintText,
         label: label,
       ),
-      style: TextStyle(
-        color: Colors.white,
-      ),
+      style: TextStyle(color: Colors.white),
       items: items,
       onChanged: (_) {},
       validator: validator,

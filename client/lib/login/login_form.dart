@@ -1,6 +1,9 @@
 import 'package:client/shared/text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:client/utils/show_snack_bar.dart';
+import 'package:client/services/client_service.dart';
+import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -10,7 +13,22 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final cpf = TextEditingController();
+  final password = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  void onSubmit() {
+    FormState formState = _formKey.currentState!;
+
+    if (!formState.validate()) {
+      showSnackBar(context, "Form Invalid");
+      return;
+    }
+
+    formState.save();
+
+    context.read<ClientService>().login(cpf: cpf.text, password: password.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +37,12 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           TextInput(
+            controller: cpf,
             label: Text("CPF"),
           ),
           SizedBox(height: 25),
           TextInput(
+            controller: password,
             label: Text("Senha"),
           ),
           SizedBox(height: 25),
@@ -43,7 +63,8 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/home');
+                onSubmit();
+                // Navigator.pushNamed(context, '/home');
               },
               child: Text(
                 'Login',

@@ -12,7 +12,7 @@ void showSnackBar(
         message,
         style: TextStyle(color: TW3Colors.slate.shade100),
       ),
-      backgroundColor: backgroundColor,
+      backgroundColor: backgroundColor ?? TW3Colors.blue.shade500,
     ),
   );
 }

@@ -6,6 +6,7 @@ class TextInput extends StatelessWidget {
   final void Function(String)? onChanged;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   const TextInput({
     super.key,
@@ -13,6 +14,7 @@ class TextInput extends StatelessWidget {
     this.onChanged,
     this.inputFormatters,
     this.controller,
+    this.validator,
   });
 
   @override
@@ -28,6 +30,7 @@ class TextInput extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       inputFormatters: inputFormatters,
+      validator: validator,
     );
   }
 }
