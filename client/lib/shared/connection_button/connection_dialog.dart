@@ -62,7 +62,7 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
       title: Text(
         'Connection Panel',
         style: TextStyle(
-          color: TW3Colors.slate.shade100,
+          color: TW3Colors.zinc.shade100,
         ),
       ),
       content: Column(

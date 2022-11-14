@@ -10,7 +10,7 @@ void showSnackBar(
     SnackBar(
       content: Text(
         message,
-        style: TextStyle(color: TW3Colors.slate.shade100),
+        style: TextStyle(color: TW3Colors.zinc.shade100),
       ),
       backgroundColor: backgroundColor,
     ),
@@ -28,7 +28,7 @@ void showSnackBarWithKey(
     SnackBar(
       content: Text(
         message,
-        style: TextStyle(color: TW3Colors.slate.shade100),
+        style: TextStyle(color: TW3Colors.zinc.shade100),
       ),
       backgroundColor: backgroundColor,
     ),

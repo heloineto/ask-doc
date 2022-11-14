@@ -13,7 +13,7 @@ Future<void> register(Map<String, dynamic> request) async {
   };
 
   try {
-    final record = await client.records.create('users', body: body);
+    await client.records.create('users', body: body);
   } catch (error) {
     print("Error: Register\n\n${error.toString()}\n\n");
 
