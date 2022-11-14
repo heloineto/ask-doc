@@ -15,9 +15,6 @@ class ClientService extends ChangeNotifier {
   void connect({
     required String ip,
     required int port,
-    Function(Object error)? onError,
-    Function? onConnect,
-    Function? onDisconnect,
   }) async {
     try {
       socket = await Socket.connect(ip, port);
@@ -28,7 +25,6 @@ class ClientService extends ChangeNotifier {
         backgroundColor: TW3Colors.red.shade500,
       );
 
-      // if (onError != null) onError(error);
       return;
     }
 
@@ -36,7 +32,6 @@ class ClientService extends ChangeNotifier {
       return;
     }
 
-    // if (onConnect != null) onConnect();
     showSnackBarWithKey(
       scaffoldKey,
       "Connected",
@@ -49,26 +44,19 @@ class ClientService extends ChangeNotifier {
     socket!.listen(
       (event) {},
       onError: (error) {
-        debugPrint("ON ERROR");
-
         debugPrint("Client: Socket error: $error");
 
         socket!.destroy();
       },
       onDone: () {
-        debugPrint("ON DONE");
-
         debugPrint("Client: Socket done");
 
         socket!.destroy();
       },
     );
 
+    notifyListeners();
     socket!.done.then((value) {
-      debugPrint("DONE");
-
-      // if (onDisconnect != null) onDisconnect();
-
       showSnackBarWithKey(
         scaffoldKey,
         "Disconnect",

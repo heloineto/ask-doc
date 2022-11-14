@@ -43,21 +43,6 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
     context.read<ClientService>().connect(
           ip: ip.text,
           port: int.parse(port.text),
-          // onError: (error) => showSnackBar(
-          //   context,
-          //   "Error: $error",
-          //   backgroundColor: TW3Colors.red.shade500,
-          // ),
-          // onConnect: () => showSnackBar(
-          //   context,
-          //   "Connected",
-          //   backgroundColor: TW3Colors.green.shade500,
-          // ),
-          // onDisconnect: () => showSnackBar(
-          //   context,
-          //   "Disconnect",
-          //   backgroundColor: TW3Colors.red.shade500,
-          // ),
         );
 
     Navigator.pop(context);
