@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:server/handlers.dart';
 import 'package:server/utils/input.dart';
 import 'package:server/utils/output.dart';
+import 'package:server/utils/pocketbase.dart';
 
 void run() async {
+  await runPocketbase();
+
   String ip = getIp();
   int port = getPort();
 
