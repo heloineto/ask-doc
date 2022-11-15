@@ -31,3 +31,15 @@ void printInfo(String message, {String? id}) {
 void printEvent(String message, {String? id}) {
   printThing(message, pen: AnsiPen()..magenta(), verb: "event", id: id);
 }
+
+void printLogo() {
+  var pen = AnsiPen()..white(bold: true);
+
+  print(pen("""\n
+     _        _      ____             
+    / \\   ___| | __ |  _ \\  ___   ___ 
+   / _ \\ / __| |/ / | | | |/ _ \\ / __|
+  / ___ \\\\__ \\   <  | |_| | (_) | (__ 
+ /_/   \\_\\___/_|\\_\\ |____/ \\___/ \\___|
+\n"""));
+}

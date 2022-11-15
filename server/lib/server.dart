@@ -6,7 +6,8 @@ import 'package:server/utils/output.dart';
 import 'package:server/utils/pocketbase.dart';
 
 void run() async {
-  await runPocketbase();
+  // await runPocketbase();
+  printLogo();
 
   String ip = getIp();
   int port = getPort();
