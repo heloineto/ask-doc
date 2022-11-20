@@ -6,6 +6,8 @@ import 'dart:convert';
 
 enum ConnectionStatus { connected, loading, disconnected }
 
+var user;
+
 void login(
   request, {
   required GlobalKey<ScaffoldMessengerState> scaffoldKey,
@@ -33,6 +35,7 @@ void login(
   }
 
   navigatorState.pushNamed('/home');
+  user = request["user"];
 }
 
 void register(
@@ -232,6 +235,50 @@ class ClientService extends ChangeNotifier {
       "birthday": birthday,
       "sex": sex,
       "stats": stats
+    };
+
+    socket!.write(json.encode(request));
+  }
+
+  void logout({required String cpf}) {
+    if (socket == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: Socket is null",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+
+      return;
+    }
+
+    var request = {
+      "code": 14,
+      "cpf": cpf,
+      "status": false,
+    };
+
+    socket!.write(json.encode(request));
+  }
+
+  void sorting({
+    required String description,
+    required String priority,
+  }) {
+    if (socket == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: Socket is null",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+
+      return;
+    }
+
+    var request = {
+      "code": 9,
+      "cpf": user["cpf"],
+      "description": description,
+      "priority": priority,
     };
 
     socket!.write(json.encode(request));

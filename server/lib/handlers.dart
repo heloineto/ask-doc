@@ -1,3 +1,4 @@
+import 'package:server/handlers/logout.dart';
 import 'package:server/handlers/register.dart';
 import 'package:server/handlers/login.dart';
 import 'package:server/utils/output.dart';
@@ -5,6 +6,7 @@ import 'package:server/utils/output.dart';
 var handlers = {
   1: register,
   3: login,
+  14: logout,
 };
 
 Future<Map?> chooseHandle(dynamic request) async {

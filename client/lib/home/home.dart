@@ -1,3 +1,4 @@
+import 'package:client/shared/app_scaffold.dart';
 import 'package:client/shared/button.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -8,7 +9,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AppScaffold(
+      title: "Home",
       body: Center(
         child: Button(
           width: 250,
