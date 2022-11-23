@@ -43,6 +43,7 @@ void handleConnection(Socket socket) {
     printEvent("response: $strResponse", id: sockedId);
 
     socket.write(strResponse);
+    socket.flush();
   }, onError: (error) {
     printError("socket error: $error", id: sockedId);
     socket.close();

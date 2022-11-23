@@ -11,10 +11,11 @@ class SortingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-        title: "Triagem",
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SortingForm(),
-        ));
+      title: "Triagem",
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SortingForm(),
+      ),
+    );
   }
 }

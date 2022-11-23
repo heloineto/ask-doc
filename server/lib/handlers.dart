@@ -1,11 +1,13 @@
 import 'package:server/handlers/logout.dart';
 import 'package:server/handlers/register.dart';
 import 'package:server/handlers/login.dart';
+import 'package:server/handlers/sorting.dart';
 import 'package:server/utils/output.dart';
 
 var handlers = {
   1: register,
   3: login,
+  9: sorting,
   14: logout,
 };
 

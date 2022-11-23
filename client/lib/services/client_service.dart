@@ -9,11 +9,11 @@ enum ConnectionStatus { connected, loading, disconnected }
 var user;
 
 void login(
-  request, {
+  response, {
   required GlobalKey<ScaffoldMessengerState> scaffoldKey,
   required GlobalKey<NavigatorState> navigatorKey,
 }) {
-  if (!request["status"]) {
+  if (!response["status"]) {
     showSnackBarWithKey(
       scaffoldKey,
       "Credenciais erradas",
@@ -31,19 +31,20 @@ void login(
       "navigatorState é null",
       backgroundColor: TW3Colors.red.shade500,
     );
+
     return;
   }
 
   navigatorState.pushNamed('/home');
-  user = request["user"];
+  user = response["user"];
 }
 
 void register(
-  request, {
+  response, {
   required GlobalKey<ScaffoldMessengerState> scaffoldKey,
   required GlobalKey<NavigatorState> navigatorKey,
 }) {
-  if (!request["success"]) {
+  if (!response["success"]) {
     showSnackBarWithKey(
       scaffoldKey,
       "Erro ao registrar",
@@ -72,10 +73,29 @@ void register(
   );
 }
 
-var handlers = {
-  103: login,
-  101: register,
-};
+void logout(
+  response, {
+  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
+  required GlobalKey<NavigatorState> navigatorKey,
+}) {}
+
+void sorting(
+  response, {
+  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
+  required GlobalKey<NavigatorState> navigatorKey,
+}) {
+  if (!response["success"]) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "O servidor não permitiu a operação de triagem",
+      backgroundColor: TW3Colors.red.shade500,
+    );
+
+    return;
+  }
+}
+
+var responseHandlers = {103: login, 101: register, 114: logout, 109: sorting};
 
 class ClientService extends ChangeNotifier {
   Socket? socket;
@@ -85,10 +105,10 @@ class ClientService extends ChangeNotifier {
 
   ClientService({required this.scaffoldKey, required this.navigatorKey});
 
-  void chooseHandle(Map request) {
-    print("object $request");
+  void handleResponse(Map response) {
+    print("recieved - $response");
 
-    int? code = request["code"] as int?;
+    int? code = response["code"] as int?;
 
     if (code == null) {
       showSnackBarWithKey(
@@ -99,7 +119,7 @@ class ClientService extends ChangeNotifier {
       return;
     }
 
-    var handler = handlers[code];
+    var handler = responseHandlers[code];
 
     if (handler == null) {
       showSnackBarWithKey(
@@ -111,7 +131,7 @@ class ClientService extends ChangeNotifier {
     }
 
     handler(
-      request,
+      response,
       navigatorKey: navigatorKey,
       scaffoldKey: scaffoldKey,
     );
@@ -149,16 +169,9 @@ class ClientService extends ChangeNotifier {
     socket!.listen(
       (event) {
         String strEvent = String.fromCharCodes(event);
-
-        // showSnackBarWithKey(
-        //   scaffoldKey,
-        //   "RECIEVED: $strEvent",
-        //   backgroundColor: TW3Colors.blue.shade500,
-        // );
-
         var response = jsonDecode(strEvent);
 
-        chooseHandle(response);
+        handleResponse(response);
       },
       onError: (error) {
         debugPrint("Client: Socket error: $error");
@@ -193,6 +206,15 @@ class ClientService extends ChangeNotifier {
     await socket!.close();
   }
 
+  void sendRequest(Map request) {
+    String strRequest = json.encode(request);
+
+    print("sent - $strRequest");
+
+    socket!.write(strRequest);
+    socket!.flush();
+  }
+
   void login({required String cpf, required String password}) {
     if (socket == null) {
       showSnackBarWithKey(
@@ -207,6 +229,7 @@ class ClientService extends ChangeNotifier {
     var request = {"code": 3, "cpf": cpf, "password": password};
 
     socket!.write(json.encode(request));
+    socket!.flush();
   }
 
   void register({
@@ -238,9 +261,10 @@ class ClientService extends ChangeNotifier {
     };
 
     socket!.write(json.encode(request));
+    socket!.flush();
   }
 
-  void logout({required String cpf}) {
+  void logout() {
     if (socket == null) {
       showSnackBarWithKey(
         scaffoldKey,
@@ -251,13 +275,24 @@ class ClientService extends ChangeNotifier {
       return;
     }
 
+    if (user['cpf'] == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: CPF not found",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+
+      return;
+    }
+
     var request = {
       "code": 14,
-      "cpf": cpf,
+      "cpf": user['cpf'],
       "status": false,
     };
 
     socket!.write(json.encode(request));
+    socket!.flush();
   }
 
   void sorting({
@@ -274,6 +309,16 @@ class ClientService extends ChangeNotifier {
       return;
     }
 
+    if (user['cpf'] == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: CPF not found",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+
+      return;
+    }
+
     var request = {
       "code": 9,
       "cpf": user["cpf"],
@@ -282,5 +327,6 @@ class ClientService extends ChangeNotifier {
     };
 
     socket!.write(json.encode(request));
+    socket!.flush();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:client/services/client_service.dart';
 import 'package:client/shared/connection_button/connection_button.dart';
-import 'package:client/shared/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +11,8 @@ class AppScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var clientService = Provider.of<ClientService>(context);
+
     return Scaffold(
       floatingActionButton: ConnectionButton(),
       appBar: AppBar(title: Text(title ?? "Ask Doc")),
@@ -47,7 +48,7 @@ class AppScaffold extends StatelessWidget {
             ListTile(
               title: const Text('Logout', style: TextStyle(color: Colors.red)),
               onTap: () {
-                Provider.of<ClientService>(context).logout(cpf: "");
+                clientService.logout();
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/');
               },

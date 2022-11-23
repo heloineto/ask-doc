@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:pocketbase/pocketbase.dart';
 
 Future<void> runPocketbase() async {
   var result = await Process.run('./pocketbase.exe', ['serve']);
@@ -8,3 +9,5 @@ Future<void> runPocketbase() async {
 
   print('\n');
 }
+
+final client = PocketBase('http://127.0.0.1:8090');

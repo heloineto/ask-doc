@@ -1,7 +1,5 @@
-import 'package:pocketbase/pocketbase.dart';
 import 'package:server/utils/output.dart';
-
-final client = PocketBase('http://127.0.0.1:8090');
+import 'package:server/utils/pocketbase.dart';
 
 Future<Map> register(Map request) async {
   final body = <String, dynamic>{
