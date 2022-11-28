@@ -1,8 +1,10 @@
 import 'package:client/services/client_service.dart';
 import 'package:client/shared/button.dart';
+import 'package:client/shared/text_icon_button.dart';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:client/utils/validations.dart';
 import 'package:flutter/material.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 import 'package:client/shared/text_input.dart';
@@ -60,10 +62,8 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
 
     return AlertDialog(
       title: Text(
-        'Connection Panel',
-        style: TextStyle(
-          color: TW3Colors.slate.shade100,
-        ),
+        'Painel de Conexão',
+        style: TextStyle(color: TW3Colors.slate.shade100),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -78,20 +78,21 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
             controller: port,
             inputFormatters: [services.FilteringTextInputFormatter.digitsOnly],
           ),
+          SizedBox(height: 20),
+          isConnected
+              ? TextIconButton(
+                  onPressed: disconnect,
+                  twColor: TW3Colors.red,
+                  icon: PhosphorIcons.wifiSlash,
+                  text: 'Desconectar',
+                )
+              : TextIconButton(
+                  onPressed: submit,
+                  icon: PhosphorIcons.wifiHigh,
+                  text: 'Conectar',
+                ),
         ],
       ),
-      actions: [
-        isConnected
-            ? Button(
-                onPressed: disconnect,
-                twColor: TW3Colors.red,
-                child: Text("Disconnect"),
-              )
-            : Button(
-                onPressed: submit,
-                child: Text("Connect"),
-              ),
-      ],
     );
   }
 }

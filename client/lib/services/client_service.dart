@@ -17,7 +17,7 @@ class ClientService extends ChangeNotifier {
 
   ClientService({required this.scaffoldKey, required this.navigatorKey});
 
-  void onError(String message) {
+  void showError(String message) {
     showSnackBarWithKey(
       scaffoldKey,
       message,
@@ -31,14 +31,14 @@ class ClientService extends ChangeNotifier {
     int? code = response["code"] as int?;
 
     if (code == null) {
-      onError("Error: no code was provided");
+      showError("Error: no code was provided");
       return;
     }
 
     var handler = responseHandlers[code];
 
     if (handler == null) {
-      onError("Error: unknown code provided");
+      showError("Error: unknown code provided");
       return;
     }
 
@@ -66,12 +66,12 @@ class ClientService extends ChangeNotifier {
     try {
       socket = await Socket.connect(ip, port);
     } catch (error) {
-      onError("Error: $error");
-
+      showError("Error: $error");
       return;
     }
 
     if (socket == null) {
+      showError("Error: Socket is null");
       return;
     }
 
@@ -80,6 +80,7 @@ class ClientService extends ChangeNotifier {
       "Connected",
       backgroundColor: TW3Colors.green.shade500,
     );
+
     status = ConnectionStatus.connected;
 
     debugPrint("Client: Connected to ${socket!.remoteAddress.address}");
@@ -106,7 +107,7 @@ class ClientService extends ChangeNotifier {
     notifyListeners();
 
     socket!.done.then((value) {
-      onError("Disconnect");
+      showError("Disconnect");
 
       status = ConnectionStatus.disconnected;
       notifyListeners();
@@ -115,7 +116,7 @@ class ClientService extends ChangeNotifier {
 
   void disconnect() async {
     if (socket == null) {
-      onError("Can't disconnect: socket is null");
+      showError("Can't disconnect: socket is null");
       return;
     }
 
@@ -124,7 +125,7 @@ class ClientService extends ChangeNotifier {
 
   void sendRequest(Map request) {
     if (socket == null) {
-      onError("Error: Socket is null");
+      showError("Error: Socket is null");
       return;
     }
 
@@ -164,7 +165,7 @@ class ClientService extends ChangeNotifier {
 
   void logout() {
     if (user['cpf'] == null) {
-      onError("Error: CPF not found");
+      showError("Error: CPF not found");
       return;
     }
 
@@ -182,7 +183,7 @@ class ClientService extends ChangeNotifier {
     required String priority,
   }) {
     if (user['cpf'] == null) {
-      onError("Error: CPF not found");
+      showError("Error: CPF not found");
       return;
     }
 
@@ -208,7 +209,7 @@ class ClientService extends ChangeNotifier {
 
   void patientQueue(Function responseCallback) {
     if (user['cpf'] == null) {
-      onError("Error: CPF not found");
+      showError("Error: CPF not found");
       return;
     }
 
