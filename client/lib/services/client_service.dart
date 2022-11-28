@@ -149,8 +149,7 @@ class ClientService extends ChangeNotifier {
 
     var request = {"code": 3, "cpf": cpf, "password": password};
 
-    socket.write(json.encode(request));
-    socket.flush();
+    sendRequest(request);
   }
 
   void register({
@@ -177,8 +176,7 @@ class ClientService extends ChangeNotifier {
       "stats": stats
     };
 
-    socket.write(json.encode(request));
-    socket.flush();
+    sendRequest(request);
   }
 
   void logout() {
@@ -204,8 +202,7 @@ class ClientService extends ChangeNotifier {
       "status": false,
     };
 
-    socket.write(json.encode(request));
-    socket.flush();
+    sendRequest(request);
   }
 
   void sorting({
@@ -235,7 +232,6 @@ class ClientService extends ChangeNotifier {
       "priority": priority,
     };
 
-    socket.write(json.encode(request));
-    socket.flush();
+    sendRequest(request);
   }
 }
