@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
-import 'package:client/services/service_handlers/service_handlers.dart';
+import 'package:client/services/response_handlers/response_handlers.dart';
 import 'dart:convert';
 
 enum ConnectionStatus { connected, loading, disconnected }
@@ -13,6 +13,7 @@ class ClientService extends ChangeNotifier {
   final GlobalKey<ScaffoldMessengerState> scaffoldKey;
   final GlobalKey<NavigatorState> navigatorKey;
   dynamic user;
+  Map<int, Function> responseCallbacks = {};
 
   ClientService({required this.scaffoldKey, required this.navigatorKey});
 
@@ -41,10 +42,11 @@ class ClientService extends ChangeNotifier {
         "Error: no code was provided",
         backgroundColor: TW3Colors.red.shade500,
       );
+
       return;
     }
 
-    var handler = serviceHandlers[code];
+    var handler = responseHandlers[code];
 
     if (handler == null) {
       showSnackBarWithKey(
@@ -60,6 +62,16 @@ class ClientService extends ChangeNotifier {
       navigatorKey: navigatorKey,
       scaffoldKey: scaffoldKey,
     );
+
+    var responseCallback = responseCallbacks[code];
+
+    if (responseCallback != null) {
+      responseCallback(response);
+    }
+
+    if (code == 103) {
+      user = response["user"];
+    }
   }
 
   void connect({
@@ -132,12 +144,12 @@ class ClientService extends ChangeNotifier {
   }
 
   void sendRequest(Map request) {
+    print("sendRequest $request");
     String strRequest = json.encode(request);
 
     print("sent - $strRequest");
 
-    socket!.write(strRequest);
-    socket!.flush();
+    socket!.writeln(strRequest);
   }
 
   void login({required String cpf, required String password}) {
@@ -232,6 +244,48 @@ class ClientService extends ChangeNotifier {
       "priority": priority,
     };
 
+    sendRequest(request);
+  }
+
+  void nextPatient(Function responseCallback) {
+    var socket = getSocket();
+
+    if (socket == null) {
+      return;
+    }
+
+    var request = {
+      "code": 18,
+    };
+
+    responseCallbacks[118] = responseCallback;
+
+    sendRequest(request);
+  }
+
+  void patientQueue(Function responseCallback) {
+    var socket = getSocket();
+
+    if (socket == null) {
+      return;
+    }
+
+    if (user['cpf'] == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: CPF not found",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+    }
+
+    var request = {
+      "code": 10,
+      "cpf": user["cpf"],
+    };
+
+    responseCallbacks[110] = responseCallback;
+
+    // print("send request", request);
     sendRequest(request);
   }
 }

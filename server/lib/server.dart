@@ -28,8 +28,14 @@ void handleConnection(Socket socket) {
   socket.listen((event) async {
     String strRequest = String.fromCharCodes(event);
     printEvent("request: $strRequest", id: sockedId);
+    dynamic request;
 
-    var request = jsonDecode(strRequest);
+    try {
+      request = jsonDecode(strRequest);
+    } catch (error) {
+      printError('request was not a json string. erro: $error');
+      return;
+    }
 
     var response = await chooseHandle(request);
 

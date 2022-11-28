@@ -35,8 +35,8 @@ Future<Map> nextPatient(Map request) async {
       "cpf": sortingItem.getStringValue("cpf"),
       "birthday": userItem.getStringValue("birthday"),
       "sex": userItem.getStringValue("sex"),
-      "description": sortingItem.getStringValue("sex"),
-      "priority": sortingItem.getStringValue("sex"),
+      "description": sortingItem.getStringValue("description"),
+      "priority": sortingItem.getIntValue("priority"),
     };
 
     await client.records.update(

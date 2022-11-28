@@ -46,6 +46,14 @@ class AppScaffold extends StatelessWidget {
               },
             ),
             ListTile(
+              title: const Text('Pedir Paciente',
+                  style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/doctor_queue');
+              },
+            ),
+            ListTile(
               title: const Text('Logout', style: TextStyle(color: Colors.red)),
               onTap: () {
                 clientService.logout();

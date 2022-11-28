@@ -9,8 +9,6 @@ Future<Map> sorting(Map request) async {
     "oudated": false,
   };
 
-  print("body: $body");
-
   try {
     await client.records.create('sorting', body: body);
 

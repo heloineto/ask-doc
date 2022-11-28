@@ -16,4 +16,18 @@ void sorting(
 
     return;
   }
+
+  var navigatorState = navigatorKey.currentState;
+
+  if (navigatorState == null) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "navigatorState é null",
+      backgroundColor: TW3Colors.red.shade500,
+    );
+
+    return;
+  }
+
+  navigatorState.pushNamed('/patient_queue');
 }
