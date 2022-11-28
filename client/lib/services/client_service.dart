@@ -2,108 +2,33 @@ import 'dart:io';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
+import 'package:client/services/service_handlers/service_handlers.dart';
 import 'dart:convert';
 
 enum ConnectionStatus { connected, loading, disconnected }
-
-var user;
-
-void login(
-  response, {
-  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
-  required GlobalKey<NavigatorState> navigatorKey,
-}) {
-  if (!response["status"]) {
-    showSnackBarWithKey(
-      scaffoldKey,
-      "Credenciais erradas",
-      backgroundColor: TW3Colors.red.shade500,
-    );
-
-    return;
-  }
-
-  var navigatorState = navigatorKey.currentState;
-
-  if (navigatorState == null) {
-    showSnackBarWithKey(
-      scaffoldKey,
-      "navigatorState é null",
-      backgroundColor: TW3Colors.red.shade500,
-    );
-
-    return;
-  }
-
-  navigatorState.pushNamed('/home');
-  user = response["user"];
-}
-
-void register(
-  response, {
-  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
-  required GlobalKey<NavigatorState> navigatorKey,
-}) {
-  if (!response["success"]) {
-    showSnackBarWithKey(
-      scaffoldKey,
-      "Erro ao registrar",
-      backgroundColor: TW3Colors.red.shade500,
-    );
-
-    return;
-  }
-
-  var navigatorState = navigatorKey.currentState;
-
-  if (navigatorState == null) {
-    showSnackBarWithKey(
-      scaffoldKey,
-      "navigatorState é null",
-      backgroundColor: TW3Colors.red.shade500,
-    );
-    return;
-  }
-
-  navigatorState.pushNamed('/');
-  showSnackBarWithKey(
-    scaffoldKey,
-    "Registrado com sucesso",
-    backgroundColor: TW3Colors.green.shade500,
-  );
-}
-
-void logout(
-  response, {
-  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
-  required GlobalKey<NavigatorState> navigatorKey,
-}) {}
-
-void sorting(
-  response, {
-  required GlobalKey<ScaffoldMessengerState> scaffoldKey,
-  required GlobalKey<NavigatorState> navigatorKey,
-}) {
-  if (!response["success"]) {
-    showSnackBarWithKey(
-      scaffoldKey,
-      "O servidor não permitiu a operação de triagem",
-      backgroundColor: TW3Colors.red.shade500,
-    );
-
-    return;
-  }
-}
-
-var responseHandlers = {103: login, 101: register, 114: logout, 109: sorting};
 
 class ClientService extends ChangeNotifier {
   Socket? socket;
   ConnectionStatus status = ConnectionStatus.disconnected;
   final GlobalKey<ScaffoldMessengerState> scaffoldKey;
   final GlobalKey<NavigatorState> navigatorKey;
+  dynamic user;
 
   ClientService({required this.scaffoldKey, required this.navigatorKey});
+
+  Socket? getSocket() {
+    if (socket == null) {
+      showSnackBarWithKey(
+        scaffoldKey,
+        "Error: Socket is null",
+        backgroundColor: TW3Colors.red.shade500,
+      );
+
+      return null;
+    }
+
+    return socket;
+  }
 
   void handleResponse(Map response) {
     print("recieved - $response");
@@ -119,7 +44,7 @@ class ClientService extends ChangeNotifier {
       return;
     }
 
-    var handler = responseHandlers[code];
+    var handler = serviceHandlers[code];
 
     if (handler == null) {
       showSnackBarWithKey(
@@ -216,20 +141,16 @@ class ClientService extends ChangeNotifier {
   }
 
   void login({required String cpf, required String password}) {
-    if (socket == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: Socket is null",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+    var socket = getSocket();
 
+    if (socket == null) {
       return;
     }
 
     var request = {"code": 3, "cpf": cpf, "password": password};
 
-    socket!.write(json.encode(request));
-    socket!.flush();
+    socket.write(json.encode(request));
+    socket.flush();
   }
 
   void register({
@@ -240,13 +161,9 @@ class ClientService extends ChangeNotifier {
     required String sex,
     required bool stats,
   }) {
-    if (socket == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: Socket is null",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+    var socket = getSocket();
 
+    if (socket == null) {
       return;
     }
 
@@ -260,18 +177,14 @@ class ClientService extends ChangeNotifier {
       "stats": stats
     };
 
-    socket!.write(json.encode(request));
-    socket!.flush();
+    socket.write(json.encode(request));
+    socket.flush();
   }
 
   void logout() {
-    if (socket == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: Socket is null",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+    var socket = getSocket();
 
+    if (socket == null) {
       return;
     }
 
@@ -291,21 +204,17 @@ class ClientService extends ChangeNotifier {
       "status": false,
     };
 
-    socket!.write(json.encode(request));
-    socket!.flush();
+    socket.write(json.encode(request));
+    socket.flush();
   }
 
   void sorting({
     required String description,
     required String priority,
   }) {
-    if (socket == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: Socket is null",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+    var socket = getSocket();
 
+    if (socket == null) {
       return;
     }
 
@@ -326,7 +235,7 @@ class ClientService extends ChangeNotifier {
       "priority": priority,
     };
 
-    socket!.write(json.encode(request));
-    socket!.flush();
+    socket.write(json.encode(request));
+    socket.flush();
   }
 }

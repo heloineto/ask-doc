@@ -6,6 +6,7 @@ Future<Map> sorting(Map request) async {
     "cpf": request["cpf"],
     "description": request["description"],
     "priority": request["priority"],
+    "oudated": false,
   };
 
   print("body: $body");
