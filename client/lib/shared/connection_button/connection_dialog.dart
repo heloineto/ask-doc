@@ -18,11 +18,11 @@ class ConnectionDialog extends StatefulWidget {
 }
 
 class _ConnectionDialogState extends State<ConnectionDialog> {
-  final ip = TextEditingController();
-  final port = TextEditingController();
+  String ip = '127.0.0.1';
+  String port = '8000';
 
   void submit() {
-    if (!validateIp(ip.text)) {
+    if (!validateIp(ip)) {
       showSnackBar(
         context,
         "Invalid IP Address",
@@ -32,7 +32,7 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
       return;
     }
 
-    if (!validatePort(port.text)) {
+    if (!validatePort(port)) {
       showSnackBar(
         context,
         "Invalid Port",
@@ -43,8 +43,8 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
     }
 
     context.read<ClientService>().connect(
-          ip: ip.text,
-          port: int.parse(port.text),
+          ip: ip,
+          port: int.parse(port),
         );
 
     Navigator.pop(context);
@@ -70,12 +70,14 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
         children: [
           TextInput(
             label: Text("IP"),
-            controller: ip,
+            initialValue: ip,
+            onChanged: (value) => ip = value,
           ),
           SizedBox(height: 10),
           TextInput(
             label: Text("Port"),
-            controller: port,
+            initialValue: port,
+            onChanged: (value) => port = value,
             inputFormatters: [services.FilteringTextInputFormatter.digitsOnly],
           ),
           SizedBox(height: 20),

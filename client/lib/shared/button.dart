@@ -14,7 +14,7 @@ class Button extends StatelessWidget {
     this.height = 52,
     this.onPressed,
     required this.child,
-    this.twColor = TW3Colors.green,
+    this.twColor = TW3Colors.emerald,
   }) : super(key: key);
 
   @override

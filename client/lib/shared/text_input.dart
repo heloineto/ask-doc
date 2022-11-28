@@ -8,6 +8,7 @@ class TextInput extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final int? maxLines;
+  final String? initialValue;
 
   const TextInput({
     super.key,
@@ -17,6 +18,7 @@ class TextInput extends StatelessWidget {
     this.controller,
     this.validator,
     this.maxLines,
+    this.initialValue,
   });
 
   @override
@@ -34,6 +36,7 @@ class TextInput extends StatelessWidget {
       inputFormatters: inputFormatters,
       validator: validator,
       maxLines: maxLines,
+      initialValue: initialValue,
     );
   }
 }

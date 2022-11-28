@@ -13,7 +13,7 @@ class TextIconButton extends StatelessWidget {
     this.icon,
     required this.text,
     this.onPressed,
-    this.twColor = TW3Colors.green,
+    this.twColor = TW3Colors.emerald,
   });
 
   @override
