@@ -17,43 +17,28 @@ class ClientService extends ChangeNotifier {
 
   ClientService({required this.scaffoldKey, required this.navigatorKey});
 
-  Socket? getSocket() {
-    if (socket == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: Socket is null",
-        backgroundColor: TW3Colors.red.shade500,
-      );
-
-      return null;
-    }
-
-    return socket;
+  void onError(String message) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      message,
+      backgroundColor: TW3Colors.red.shade500,
+    );
   }
 
   void handleResponse(Map response) {
-    print("recieved - $response");
+    print("received - $response");
 
     int? code = response["code"] as int?;
 
     if (code == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: no code was provided",
-        backgroundColor: TW3Colors.red.shade500,
-      );
-
+      onError("Error: no code was provided");
       return;
     }
 
     var handler = responseHandlers[code];
 
     if (handler == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: unknown code provided",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+      onError("Error: unknown code provided");
       return;
     }
 
@@ -81,11 +66,7 @@ class ClientService extends ChangeNotifier {
     try {
       socket = await Socket.connect(ip, port);
     } catch (error) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: $error",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+      onError("Error: $error");
 
       return;
     }
@@ -123,12 +104,9 @@ class ClientService extends ChangeNotifier {
     );
 
     notifyListeners();
+
     socket!.done.then((value) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Disconnect",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+      onError("Disconnect");
 
       status = ConnectionStatus.disconnected;
       notifyListeners();
@@ -137,6 +115,7 @@ class ClientService extends ChangeNotifier {
 
   void disconnect() async {
     if (socket == null) {
+      onError("Can't disconnect: socket is null");
       return;
     }
 
@@ -144,7 +123,11 @@ class ClientService extends ChangeNotifier {
   }
 
   void sendRequest(Map request) {
-    print("sendRequest $request");
+    if (socket == null) {
+      onError("Error: Socket is null");
+      return;
+    }
+
     String strRequest = json.encode(request);
 
     print("sent - $strRequest");
@@ -153,12 +136,6 @@ class ClientService extends ChangeNotifier {
   }
 
   void login({required String cpf, required String password}) {
-    var socket = getSocket();
-
-    if (socket == null) {
-      return;
-    }
-
     var request = {"code": 3, "cpf": cpf, "password": password};
 
     sendRequest(request);
@@ -172,12 +149,6 @@ class ClientService extends ChangeNotifier {
     required String sex,
     required bool stats,
   }) {
-    var socket = getSocket();
-
-    if (socket == null) {
-      return;
-    }
-
     var request = {
       "code": 1,
       "name": name,
@@ -192,19 +163,8 @@ class ClientService extends ChangeNotifier {
   }
 
   void logout() {
-    var socket = getSocket();
-
-    if (socket == null) {
-      return;
-    }
-
     if (user['cpf'] == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: CPF not found",
-        backgroundColor: TW3Colors.red.shade500,
-      );
-
+      onError("Error: CPF not found");
       return;
     }
 
@@ -221,19 +181,8 @@ class ClientService extends ChangeNotifier {
     required String description,
     required String priority,
   }) {
-    var socket = getSocket();
-
-    if (socket == null) {
-      return;
-    }
-
     if (user['cpf'] == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: CPF not found",
-        backgroundColor: TW3Colors.red.shade500,
-      );
-
+      onError("Error: CPF not found");
       return;
     }
 
@@ -248,12 +197,6 @@ class ClientService extends ChangeNotifier {
   }
 
   void nextPatient(Function responseCallback) {
-    var socket = getSocket();
-
-    if (socket == null) {
-      return;
-    }
-
     var request = {
       "code": 18,
     };
@@ -264,18 +207,9 @@ class ClientService extends ChangeNotifier {
   }
 
   void patientQueue(Function responseCallback) {
-    var socket = getSocket();
-
-    if (socket == null) {
-      return;
-    }
-
     if (user['cpf'] == null) {
-      showSnackBarWithKey(
-        scaffoldKey,
-        "Error: CPF not found",
-        backgroundColor: TW3Colors.red.shade500,
-      );
+      onError("Error: CPF not found");
+      return;
     }
 
     var request = {
@@ -285,7 +219,6 @@ class ClientService extends ChangeNotifier {
 
     responseCallbacks[110] = responseCallback;
 
-    // print("send request", request);
     sendRequest(request);
   }
 }

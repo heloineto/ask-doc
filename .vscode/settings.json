@@ -1,5 +1,4 @@
 {
-    "git.ignoredRepositories": [
-        "C:/src/flutter"
-    ]
+    "git.ignoredRepositories": ["C:/src/flutter"],
+    "cSpell.words": ["writeln"]
 }
