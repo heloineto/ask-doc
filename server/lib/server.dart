@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:server/handlers.dart';
 import 'package:server/utils/input.dart';
 import 'package:server/utils/output.dart';
-import 'package:server/utils/pocketbase.dart';
+// import 'package:server/utils/pocketbase.dart';
 
 void run() async {
   // await runPocketbase();
@@ -33,7 +33,7 @@ void handleConnection(Socket socket) {
     try {
       request = jsonDecode(strRequest);
     } catch (error) {
-      printError('request was not a json string. erro: $error');
+      printError('request was not a json string. error: $error');
       return;
     }
 

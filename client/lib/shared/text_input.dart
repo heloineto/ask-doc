@@ -9,6 +9,7 @@ class TextInput extends StatelessWidget {
   final String? Function(String?)? validator;
   final int? maxLines;
   final String? initialValue;
+  final void Function(String?)? onSaved;
 
   const TextInput({
     super.key,
@@ -19,6 +20,7 @@ class TextInput extends StatelessWidget {
     this.validator,
     this.maxLines,
     this.initialValue,
+    this.onSaved,
   });
 
   @override
@@ -37,6 +39,7 @@ class TextInput extends StatelessWidget {
       validator: validator,
       maxLines: maxLines,
       initialValue: initialValue,
+      onSaved: onSaved,
     );
   }
 }

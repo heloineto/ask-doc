@@ -13,8 +13,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final cpf = TextEditingController();
-  final password = TextEditingController();
+  String cpf = '';
+  String password = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void onSubmit() {
@@ -27,7 +27,7 @@ class _LoginFormState extends State<LoginForm> {
 
     formState.save();
 
-    context.read<ClientService>().login(cpf: cpf.text, password: password.text);
+    context.read<ClientService>().login(cpf: cpf, password: password);
   }
 
   @override
@@ -37,12 +37,22 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         children: [
           TextInput(
-            controller: cpf,
+            initialValue: cpf,
+            onSaved: (value) {
+              if (value != null) {
+                cpf = value;
+              }
+            },
             label: Text("CPF"),
           ),
           SizedBox(height: 25),
           TextInput(
-            controller: password,
+            initialValue: password,
+            onSaved: (value) {
+              if (value != null) {
+                password = value;
+              }
+            },
             label: Text("Senha"),
           ),
           SizedBox(height: 25),

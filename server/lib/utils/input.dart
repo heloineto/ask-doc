@@ -3,14 +3,16 @@ import 'package:server/utils/output.dart';
 import 'package:server/utils/validations.dart';
 
 final defaultIp = '127.0.0.1';
-final defaultPort = '21000';
+final defaultPort = '8000';
 
 String getIp() {
   print("Insert IP:");
   String? ip = stdin.readLineSync();
 
   if (ip == null || ip == "") {
-    throw 'No IP provided';
+    print("No IP provided, using $defaultIp");
+    return defaultIp;
+    // throw 'No IP provided';
   }
   if (!validateIp(ip)) {
     printError("invalid IP address");
@@ -25,7 +27,9 @@ int getPort() {
   String? portStr = stdin.readLineSync();
 
   if (portStr == null || portStr == "") {
-    throw 'no port provided';
+    print("No port provided, using $defaultPort");
+    return int.parse(defaultPort);
+    // throw 'no port provided';
   }
   if (!validatePort(portStr)) {
     printError("invalid port");
