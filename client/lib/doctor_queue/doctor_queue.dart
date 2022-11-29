@@ -44,7 +44,21 @@ class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
             if (response != null)
               response["success"] == false
                   ? Column(
-                      children: [Icon(PhosphorIcons.xCircle)],
+                      children: [
+                        Icon(
+                          PhosphorIcons.xCircle,
+                          size: 60,
+                          color: TW3Colors.zinc.shade300,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          "Nenhum paciente encontrado",
+                          style: TextStyle(
+                            color: TW3Colors.zinc.shade200,
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
                     )
                   : Column(
                       children: [],

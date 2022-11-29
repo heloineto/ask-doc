@@ -164,7 +164,7 @@ class ClientService extends ChangeNotifier {
   }
 
   void logout() {
-    if (user['cpf'] == null) {
+    if (user?['cpf'] == null) {
       showError("Error: CPF not found");
       return;
     }
@@ -182,7 +182,7 @@ class ClientService extends ChangeNotifier {
     required String description,
     required String priority,
   }) {
-    if (user['cpf'] == null) {
+    if (user?['cpf'] == null) {
       showError("Error: CPF not found");
       return;
     }
@@ -208,7 +208,7 @@ class ClientService extends ChangeNotifier {
   }
 
   void patientQueue(Function responseCallback) {
-    if (user['cpf'] == null) {
+    if (user?['cpf'] == null) {
       showError("Error: CPF not found");
       return;
     }
