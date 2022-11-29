@@ -18,8 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>
-          ClientService(scaffoldKey: scaffoldKey, navigatorKey: navigatorKey),
+      create: (context) => ClientService(
+        scaffoldKey: scaffoldKey,
+        navigatorKey: navigatorKey,
+      ),
       child: MaterialApp(
         title: 'Ask Doc',
         scaffoldMessengerKey: scaffoldKey,

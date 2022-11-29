@@ -18,10 +18,15 @@ class ConnectionDialog extends StatefulWidget {
 }
 
 class _ConnectionDialogState extends State<ConnectionDialog> {
-  String ip = '127.0.0.1';
-  String port = '8000';
+  String ip = '';
+  String port = '';
 
   void submit() {
+    if (ip == '' && port == '') {
+      ip = '127.0.0.1';
+      port = '21000';
+    }
+
     if (!validateIp(ip)) {
       showSnackBar(
         context,

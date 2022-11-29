@@ -3,7 +3,7 @@ import 'package:server/utils/output.dart';
 import 'package:server/utils/validations.dart';
 
 final defaultIp = '127.0.0.1';
-final defaultPort = '8000';
+final defaultPort = '21000';
 
 String getIp() {
   print("Insert IP:");

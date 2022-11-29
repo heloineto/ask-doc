@@ -1,9 +1,6 @@
-import 'package:client/services/client_service.dart';
 import 'package:client/shared/app_drawer/app_drawer.dart';
 import 'package:client/shared/connection_button/connection_button.dart';
 import 'package:flutter/material.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:provider/provider.dart';
 
 class AppScaffold extends StatelessWidget {
   const AppScaffold({super.key, this.title, this.body});
