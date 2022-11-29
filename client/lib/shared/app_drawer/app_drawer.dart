@@ -32,7 +32,7 @@ class AppDrawer extends StatelessWidget {
           ),
           AppListTile(
             title: "Triagem",
-            icon: PhosphorIcons.activity,
+            icon: PhosphorIcons.heartbeatFill,
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/sorting');
@@ -40,7 +40,7 @@ class AppDrawer extends StatelessWidget {
           ),
           AppListTile(
             title: "Pedir Paciente",
-            icon: PhosphorIcons.activity,
+            icon: PhosphorIcons.usersThreeFill,
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/doctor_queue');

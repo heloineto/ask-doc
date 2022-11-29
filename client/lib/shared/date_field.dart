@@ -8,6 +8,8 @@ class DateField extends StatelessWidget {
   final String? hintText;
   final void Function(DateTime?)? onSaved;
   final String? Function(DateTime?)? validator;
+  final DateTime? initialValue;
+  final bool enabled;
 
   DateField({
     super.key,
@@ -15,11 +17,15 @@ class DateField extends StatelessWidget {
     this.hintText,
     this.onSaved,
     this.validator,
+    this.initialValue,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return DateTimeField(
+      enabled: enabled,
+      initialValue: initialValue,
       format: format,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
