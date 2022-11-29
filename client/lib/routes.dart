@@ -6,7 +6,7 @@ import 'package:client/doctor_queue/doctor_queue.dart';
 import 'package:client/patient_queue/patient_queue.dart';
 
 var routes = {
-  '/': (context) => const LoginScreen(),
+  '/': (context) => const SortingScreen(),
   '/home': (context) => const HomeScreen(),
   '/registration': (context) => const RegistrationScreen(),
   '/sorting': (context) => const SortingScreen(),

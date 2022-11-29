@@ -49,14 +49,14 @@ Future<Map> nextPatient(Map request) async {
 
     return {
       "code": 118,
-      "succsess": true,
+      "success": true,
       "user": user,
     };
   } catch (error) {
     printError("Next patient request failed $error\n\n");
     return {
       "code": 118,
-      "succsess": false,
+      "success": false,
     };
   }
 }

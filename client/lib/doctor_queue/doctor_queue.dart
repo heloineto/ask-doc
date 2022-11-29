@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:client/services/client_service.dart';
 import 'package:client/shared/app_scaffold.dart';
 import 'package:client/shared/button.dart';
+import 'package:client/shared/text_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,9 @@ class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            Button(
-              child: Text("Próximo"),
+            TextIconButton(
+              icon: PhosphorIcons.arrowCircleRight,
+              text: "Pedir próximo paciente",
               onPressed: () {
                 Provider.of<ClientService>(context, listen: false)
                     .nextPatient((currentResponse) {
@@ -38,7 +40,15 @@ class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
               },
             ),
             Text("Response:"),
-            Text(jsonEncode(response))
+            Text(jsonEncode(response)),
+            if (response != null)
+              response["success"] == false
+                  ? Column(
+                      children: [Icon(PhosphorIcons.xCircle)],
+                    )
+                  : Column(
+                      children: [],
+                    )
           ],
         ),
       ),

@@ -31,7 +31,7 @@ Future<Map> patientQueue(Map request) async {
     printError("Next patient request failed $error\n\n");
     return {
       "code": 110,
-      "succsess": false,
+      "success": false,
     };
   }
 }
