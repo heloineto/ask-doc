@@ -24,18 +24,7 @@ class DoctorQueueScreen extends StatefulWidget {
 }
 
 class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
-  dynamic response = {
-    "code": 118,
-    "success": true,
-    "user": {
-      "name": "João Victor",
-      "cpf": "00011100011",
-      "birthday": "11112022",
-      "sex": "M",
-      "description": "Headache",
-      "priority": 1
-    }
-  };
+  dynamic response = {};
 
   @override
   Widget build(BuildContext context) {

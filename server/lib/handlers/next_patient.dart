@@ -25,7 +25,7 @@ Future<Map> nextPatient(Map request) async {
     );
 
     if (usersResult.items.isEmpty) {
-      throw ("no patient found");
+      throw ("found sorting item, but no patient with this cpf found");
     }
 
     var userItem = usersResult.items[0];

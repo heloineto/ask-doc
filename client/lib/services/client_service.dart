@@ -129,11 +129,16 @@ class ClientService extends ChangeNotifier {
       return;
     }
 
-    String strRequest = json.encode(request);
+    String strRequest = json.encode(request).trim();
 
     print("sent - $strRequest");
 
-    socket!.writeln(strRequest);
+    // socket!.writeln(strRequest);
+
+    // socket!.write(strRequest);
+    // socket!.write("\n");
+
+    socket!.write("$strRequest\n");
   }
 
   void login({required String cpf, required String password}) {

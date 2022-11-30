@@ -4,9 +4,11 @@ import 'package:server/handlers.dart';
 import 'package:server/utils/input.dart';
 import 'package:server/utils/output.dart';
 // import 'package:server/utils/pocketbase.dart';
+// import 'package:server/utils/pocketbase.dart';
 
 void run() async {
   // await runPocketbase();
+
   printLogo();
 
   String ip = getIp();
@@ -48,7 +50,12 @@ void handleConnection(Socket socket) {
 
     printEvent("response: $strResponse", id: sockedId);
 
-    socket.writeln(strResponse);
+    // socket.writeln(strResponse);
+
+    // socket.write(strResponse);
+    // socket.write("\n");
+
+    socket.write("$strResponse\n");
   }, onError: (error) {
     printError("socket error: $error", id: sockedId);
     socket.close();
