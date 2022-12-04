@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:client/doctor_queue/patient.dart';
 import 'package:client/services/client_service.dart';
 import 'package:client/shared/app_scaffold.dart';
-import 'package:client/shared/button.dart';
 import 'package:client/shared/text_icon_button.dart';
+import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
@@ -40,11 +39,28 @@ class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
               icon: PhosphorIcons.arrowCircleRight,
               text: "Pedir próximo paciente",
               onPressed: () {
-                Provider.of<ClientService>(context, listen: false)
-                    .nextPatient((currentResponse) {
+                var clientService =
+                    Provider.of<ClientService>(context, listen: false);
+
+                clientService.nextPatient((currentResponse) {
                   setState(() {
                     response = currentResponse;
                   });
+
+                  String? toCpf = currentResponse?["user"]?["cpf"];
+
+                  if (toCpf == null) {
+                    showSnackBar(
+                      context,
+                      "Error: toCpf is null",
+                      backgroundColor: TW3Colors.red,
+                    );
+                    return;
+                  }
+
+                  clientService.sendChatRequest(
+                    toCpf: currentResponse["user"]["cpf"],
+                  );
                 });
               },
             ),
@@ -68,26 +84,6 @@ class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
                 ),
               ),
             ),
-            // if (response != null)
-            //   response["success"] == false
-            //       ? Column(
-            //           children: [
-            //             Icon(
-            //               PhosphorIcons.xCircle,
-            //               size: 60,
-            //               color: TW3Colors.zinc.shade300,
-            //             ),
-            //             SizedBox(height: 8),
-            //             Text(
-            //               "Nenhum paciente encontrado",
-            //               style: TextStyle(
-            //                 color: TW3Colors.zinc.shade200,
-            //                 fontSize: 18,
-            //               ),
-            //             )
-            //           ],
-            //         )
-            //       : Patient(patient: response["user"])
           ],
         ),
       ),

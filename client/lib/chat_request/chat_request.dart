@@ -10,21 +10,21 @@ class ChatRequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
-      title: "Home",
+      title: "Pedido de Chat",
       body: Center(
         child: Button(
           width: 250,
-          twColor: TW3Colors.red,
+          twColor: TW3Colors.emerald,
           onPressed: () {
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/chat');
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const [
-              Icon(PhosphorIcons.signOut),
+              Icon(PhosphorIcons.checkCircle),
               SizedBox(width: 10),
               Text(
-                'Sair',
+                'Aceitar',
                 style: TextStyle(fontSize: 18),
               )
             ],

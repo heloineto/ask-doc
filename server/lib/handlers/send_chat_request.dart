@@ -1,26 +1,29 @@
-import 'package:server/utils/pocketbase.dart';
+import 'dart:convert';
+
+import 'package:server/inter_client_messages.dart';
 import 'package:server/utils/output.dart';
 
 Future<Map> sendChatRequest(Map request) async {
-  final body = <String, dynamic>{
-    "cpf": request["cpf"],
-    "description": request["description"],
-    "priority": request["priority"],
-    "oudated": false,
-  };
-
   try {
-    await client.records.create('sorting', body: body);
+    bool success = sentToCpf(
+      toCpf: request["toCpf"],
+      message: jsonEncode(
+        {
+          "code": "1005",
+          "success": true,
+        },
+      ),
+    );
 
     return {
-      "code": 109,
-      "success": true,
+      "code": 105,
+      "success": success,
     };
   } catch (error) {
-    printError("sorting failed $error\n\n");
+    printError("send chat request failed $error\n\n");
 
     return {
-      "code": 109,
+      "code": 105,
       "success": false,
     };
   }

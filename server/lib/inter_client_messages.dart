@@ -18,7 +18,7 @@ String? getSockedId({required String cpf}) {
   return clientId;
 }
 
-void sentToCpf({
+bool sentToCpf({
   required String toCpf,
   required String message,
 }) {
@@ -26,7 +26,7 @@ void sentToCpf({
 
   if (toSockedId == null) {
     printError("client with cpf $toCpf is offline or doesn't exist");
-    return;
+    return false;
   }
 
   var toClient = clients[toSockedId];
@@ -34,8 +34,9 @@ void sentToCpf({
 
   if (toSocket == null) {
     printError("unexpected error, toSocket is null");
-    return;
+    return false;
   }
 
   sendMessage(toSocket, message);
+  return true;
 }
