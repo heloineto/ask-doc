@@ -3,8 +3,17 @@ import 'dart:io';
 import 'package:server/handlers.dart';
 import 'package:server/utils/input.dart';
 import 'package:server/utils/output.dart';
-// import 'package:server/utils/pocketbase.dart';
-// import 'package:server/utils/pocketbase.dart';
+
+Map<String, Map> clients = {};
+
+void sendMessage(Socket socket, String message) {
+  socket.writeln(message);
+
+  // socket.write(message);
+  // socket.write("\n");
+
+  // socket.write("$message\n");
+}
 
 void run() async {
   // await runPocketbase();
@@ -24,6 +33,8 @@ void run() async {
 
 void handleConnection(Socket socket) {
   String sockedId = '${socket.remoteAddress.address}:${socket.port}';
+
+  clients[sockedId] = {"socket": socket};
 
   printReady("connection established", id: sockedId);
 
@@ -46,21 +57,30 @@ void handleConnection(Socket socket) {
       return;
     }
 
+    if (response["code"] == 103) {
+      var client = clients[sockedId];
+
+      if (client == null) {
+        printError('unexpected error. clients[sockedId] was null');
+
+        return;
+      }
+
+      clients[sockedId] = {...client, "user": response["user"]};
+    }
+
     var strResponse = json.encode(response);
 
     printEvent("response: $strResponse", id: sockedId);
 
-    // socket.writeln(strResponse);
-
-    // socket.write(strResponse);
-    // socket.write("\n");
-
-    socket.write("$strResponse\n");
+    sendMessage(socket, strResponse);
   }, onError: (error) {
     printError("socket error: $error", id: sockedId);
     socket.close();
+    clients.remove(sockedId);
   }, onDone: () {
     printInfo("socket closed", id: sockedId);
     socket.close();
+    clients.remove(sockedId);
   });
 }

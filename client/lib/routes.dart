@@ -12,4 +12,5 @@ var routes = {
   '/sorting': (context) => const SortingScreen(),
   '/doctor_queue': (context) => const DoctorQueueScreen(),
   '/patient_queue': (context) => const PatientQueueScreen(),
+  '/chat_request': (context) => const PatientQueueScreen(),
 };

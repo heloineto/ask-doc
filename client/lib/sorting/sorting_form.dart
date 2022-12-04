@@ -29,7 +29,7 @@ class _SortingFormState extends State<SortingForm> {
 
     context.read<ClientService>().sorting(
           description: description.text,
-          priority: _currentSliderValue.round().toString(),
+          priority: _currentSliderValue.round(),
         );
   }
 

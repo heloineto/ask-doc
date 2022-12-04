@@ -111,6 +111,19 @@ class ClientService extends ChangeNotifier {
 
       status = ConnectionStatus.disconnected;
       notifyListeners();
+
+      var navigatorState = navigatorKey.currentState;
+
+      if (navigatorState == null) {
+        showSnackBarWithKey(
+          scaffoldKey,
+          "navigatorState é null",
+          backgroundColor: TW3Colors.red.shade500,
+        );
+        return;
+      }
+
+      navigatorState.pushNamed('/');
     });
   }
 
@@ -133,12 +146,12 @@ class ClientService extends ChangeNotifier {
 
     print("sent - $strRequest");
 
-    // socket!.writeln(strRequest);
+    socket!.writeln(strRequest);
 
     // socket!.write(strRequest);
     // socket!.write("\n");
 
-    socket!.write("$strRequest\n");
+    // socket!.write("$strRequest\n");
   }
 
   void login({required String cpf, required String password}) {
@@ -185,7 +198,7 @@ class ClientService extends ChangeNotifier {
 
   void sorting({
     required String description,
-    required String priority,
+    required int priority,
   }) {
     if (user?['cpf'] == null) {
       showError("Error: CPF not found");
@@ -227,4 +240,25 @@ class ClientService extends ChangeNotifier {
 
     sendRequest(request);
   }
+
+  void sendChatRequest({required String toCpf}) {
+    if (user?['cpf'] == null) {
+      showError("Error: CPF not found");
+      return;
+    }
+
+    var request = {
+      "code": 5,
+      "toCpf": toCpf,
+      "fromCpf": user["cpf"],
+    };
+
+    sendRequest(request);
+  }
+
+  void acceptChatRequest() {}
+
+  void sendChatMessage({required String toCpf, required String message}) {}
+
+  void closeChat() {}
 }

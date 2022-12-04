@@ -11,6 +11,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var clientService = Provider.of<ClientService>(context);
+    bool isDoctor = clientService.user?["doctor"];
 
     return Drawer(
       child: ListView(
@@ -30,22 +31,23 @@ class AppDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/home');
             },
           ),
-          AppListTile(
-            title: "Triagem",
-            icon: PhosphorIcons.heartbeatFill,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/sorting');
-            },
-          ),
-          AppListTile(
-            title: "Pedir Paciente",
-            icon: PhosphorIcons.usersThreeFill,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/doctor_queue');
-            },
-          ),
+          isDoctor
+              ? AppListTile(
+                  title: "Pedir Paciente",
+                  icon: PhosphorIcons.usersThreeFill,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/doctor_queue');
+                  },
+                )
+              : AppListTile(
+                  title: "Triagem",
+                  icon: PhosphorIcons.heartbeatFill,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/sorting');
+                  },
+                ),
           AppListTile(
             title: 'Logout',
             icon: PhosphorIcons.signOutFill,

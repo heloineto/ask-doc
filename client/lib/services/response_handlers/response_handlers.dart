@@ -1,3 +1,5 @@
+import 'package:client/services/response_handlers/recieve_chat_request.dart';
+import 'package:client/services/response_handlers/sent_chat_request.dart';
 import './login.dart';
 import './logout.dart';
 import './register.dart';
@@ -12,4 +14,6 @@ var responseHandlers = {
   109: sorting,
   110: patientQueue,
   118: nextPatient,
+  105: sendChatRequest,
+  1005: recieveChatRequest,
 };

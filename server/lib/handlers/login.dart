@@ -22,7 +22,7 @@ Future<Map> login(Map request) async {
       "cpf": rawUser.getStringValue("cpf"),
       "birthday": rawUser.getStringValue("birthday"),
       "sex": rawUser.getStringValue("sex"),
-      "doctor": rawUser.getBoolValue("doctor"),
+      "doctor": rawUser.getBoolValue("stats"),
     };
 
     return {
