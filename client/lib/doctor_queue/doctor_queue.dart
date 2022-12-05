@@ -47,6 +47,10 @@ class _DoctorQueueScreenState extends State<DoctorQueueScreen> {
                     response = currentResponse;
                   });
 
+                  if (!currentResponse?["success"]) {
+                    return;
+                  }
+
                   String? toCpf = currentResponse?["user"]?["cpf"];
 
                   if (toCpf == null) {
