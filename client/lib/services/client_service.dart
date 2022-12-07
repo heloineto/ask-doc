@@ -251,9 +251,28 @@ class ClientService extends ChangeNotifier {
     sendRequest(request);
   }
 
-  void acceptChatRequest() {}
+  void acceptChatRequest({required String toCpf}) {
+    if (user?['cpf'] == null) {
+      showError("Error: CPF not found");
+      return;
+    }
+
+    var request = {
+      "code": 5,
+      "toCpf": toCpf,
+      "fromCpf": user["cpf"],
+    };
+
+    sendRequest(request);
+  }
 
   void sendChatMessage({required String toCpf, required String message}) {}
 
-  void closeChat() {}
+  void closeChat() {
+    var request = {
+      "code": 8,
+    };
+
+    sendRequest(request);
+  }
 }
