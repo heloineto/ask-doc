@@ -13,7 +13,7 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map> chat = Provider.of<ClientService>(context).chat;
+    List<Map> chat = Provider.of<ClientService>(context, listen: true).chat;
 
     return AppScaffold(
       title: "Chat",
@@ -63,11 +63,9 @@ class ChatScreen extends StatelessWidget {
                     padding: EdgeInsets.only(top: 15.0),
                     itemCount: chat.length,
                     itemBuilder: (BuildContext context, int index) {
-                      var item = chat[index];
+                      var item = chat[chat.length - index - 1];
 
                       return Column(
-                        // mainAxisAlignment: MainAxisAlignment.end,
-                        // crossAxisAlignment: CrossAxisAlignment.end,
                         crossAxisAlignment: item["isMe"]
                             ? CrossAxisAlignment.start
                             : CrossAxisAlignment.end,
@@ -75,7 +73,12 @@ class ChatScreen extends StatelessWidget {
                           Bubble(
                             padding: BubbleEdges.all(15),
                             margin: BubbleEdges.only(top: 10),
-                            nip: BubbleNip.leftTop,
+                            nip: item["isMe"]
+                                ? BubbleNip.leftTop
+                                : BubbleNip.rightTop,
+                            color: item["isMe"]
+                                ? Colors.white
+                                : Color.fromARGB(255, 225, 255, 199),
                             child: Text(
                               item["message"],
                               style: TextStyle(fontSize: 16),

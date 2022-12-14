@@ -10,7 +10,7 @@ Future<Map> sendChatRequest(Map request) async {
       toCpf: request["toCpf"],
       message: jsonEncode(
         {
-          "code": "155",
+          "code": 155,
           "success": true,
         },
       ),

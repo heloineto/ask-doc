@@ -2,7 +2,6 @@ import 'package:client/services/client_service.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tailwind_colors/tailwind_colors.dart';
 
 class MessageInput extends StatefulWidget {
   const MessageInput({super.key});
@@ -16,6 +15,8 @@ class _MessageInputState extends State<MessageInput> {
 
   @override
   Widget build(BuildContext context) {
+    var clientService = Provider.of<ClientService>(context);
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       height: 70.0,
@@ -26,10 +27,9 @@ class _MessageInputState extends State<MessageInput> {
             iconSize: 25.0,
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              // Provider.of<ClientService>(context).sendChatMessage(
-              //   toCpf: toCpf,
-              //   message: message,
-              // );
+              clientService.sendChatMessage(
+                message: message,
+              );
             },
           ),
           SizedBox(width: 20),

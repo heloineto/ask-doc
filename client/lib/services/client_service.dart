@@ -70,13 +70,27 @@ class ClientService extends ChangeNotifier {
 
     if (code == 103) {
       user = response["user"];
-    } else if (code == 212) {
+      return;
+    }
+
+    if (code == 212) {
       chat = [];
-    } else if (code == 106) {
+      notifyListeners();
+      return;
+    }
+
+    if (code == 106) {
+      print("code == 106");
+
       chat.add({
         "isMe": false,
         "message": response["message"],
       });
+
+      print("chat $chat");
+
+      notifyListeners();
+      return;
     }
   }
 
@@ -281,10 +295,15 @@ class ClientService extends ChangeNotifier {
 
   void rejectChatRequest() {}
 
-  void sendChatMessage({required String toCpf, required String message}) {
+  void sendChatMessage({required String message}) {
+    if (user?['cpf'] == null) {
+      showError("Error: CPF not found");
+      return;
+    }
+
     var request = {
       "code": 6,
-      "cpf": toCpf,
+      "cpf": user["cpf"],
       "message": message,
     };
 
@@ -292,7 +311,9 @@ class ClientService extends ChangeNotifier {
       "isMe": true,
       "message": message,
     });
+    notifyListeners();
 
+    print("chat $chat");
     sendRequest(request);
   }
 
