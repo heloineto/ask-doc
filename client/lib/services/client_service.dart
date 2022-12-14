@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:client/utils/navigate_with_key.dart';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
@@ -14,8 +15,21 @@ class ClientService extends ChangeNotifier {
   final GlobalKey<NavigatorState> navigatorKey;
   dynamic user;
   Map<int, Function> responseCallbacks = {};
+  List<Text> logs = [];
+  List<Map> chat = [];
 
   ClientService({required this.scaffoldKey, required this.navigatorKey});
+
+  void printConsole(String str) {
+    logs.add(
+      Text(
+        str,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+
+    debugPrint(str);
+  }
 
   void showError(String message) {
     showSnackBarWithKey(
@@ -26,7 +40,7 @@ class ClientService extends ChangeNotifier {
   }
 
   void handleResponse(Map response) {
-    print("received - $response");
+    printConsole("received - $response");
 
     int? code = response["code"] as int?;
 
@@ -56,6 +70,13 @@ class ClientService extends ChangeNotifier {
 
     if (code == 103) {
       user = response["user"];
+    } else if (code == 212) {
+      chat = [];
+    } else if (code == 106) {
+      chat.add({
+        "isMe": false,
+        "message": response["message"],
+      });
     }
   }
 
@@ -83,7 +104,7 @@ class ClientService extends ChangeNotifier {
 
     status = ConnectionStatus.connected;
 
-    debugPrint("Client: Connected to ${socket!.remoteAddress.address}");
+    printConsole("Client: Connected to ${socket!.remoteAddress.address}");
 
     socket!.listen(
       (event) {
@@ -93,12 +114,12 @@ class ClientService extends ChangeNotifier {
         handleResponse(response);
       },
       onError: (error) {
-        debugPrint("Client: Socket error: $error");
+        printConsole("Client: Socket error: $error");
 
         socket!.destroy();
       },
       onDone: () {
-        debugPrint("Client: Socket done");
+        printConsole("Client: Socket done");
 
         socket!.destroy();
       },
@@ -112,18 +133,11 @@ class ClientService extends ChangeNotifier {
       status = ConnectionStatus.disconnected;
       notifyListeners();
 
-      var navigatorState = navigatorKey.currentState;
-
-      if (navigatorState == null) {
-        showSnackBarWithKey(
-          scaffoldKey,
-          "navigatorState é null",
-          backgroundColor: TW3Colors.red.shade500,
-        );
-        return;
-      }
-
-      navigatorState.pushNamed('/');
+      navigateWithKey(
+        '/',
+        scaffoldKey: scaffoldKey,
+        navigatorKey: navigatorKey,
+      );
     });
   }
 
@@ -144,7 +158,7 @@ class ClientService extends ChangeNotifier {
 
     String strRequest = json.encode(request).trim();
 
-    print("sent - $strRequest");
+    printConsole("sent - $strRequest");
 
     socket!.writeln(strRequest);
   }
@@ -251,22 +265,36 @@ class ClientService extends ChangeNotifier {
     sendRequest(request);
   }
 
-  void acceptChatRequest({required String toCpf}) {
+  void acceptChatRequest() {
     if (user?['cpf'] == null) {
       showError("Error: CPF not found");
       return;
     }
 
     var request = {
-      "code": 5,
-      "toCpf": toCpf,
-      "fromCpf": user["cpf"],
+      "code": 12,
+      "cpf": user["cpf"],
     };
 
     sendRequest(request);
   }
 
-  void sendChatMessage({required String toCpf, required String message}) {}
+  void rejectChatRequest() {}
+
+  void sendChatMessage({required String toCpf, required String message}) {
+    var request = {
+      "code": 6,
+      "cpf": toCpf,
+      "message": message,
+    };
+
+    chat.add({
+      "isMe": true,
+      "message": message,
+    });
+
+    sendRequest(request);
+  }
 
   void closeChat() {
     var request = {

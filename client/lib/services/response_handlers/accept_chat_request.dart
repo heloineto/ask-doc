@@ -3,20 +3,20 @@ import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-void receiveChatRequest(
+void acceptChatRequest(
   response, {
   required GlobalKey<ScaffoldMessengerState> scaffoldKey,
   required GlobalKey<NavigatorState> navigatorKey,
 }) {
   navigateWithKey(
-    '/chat_request',
+    '/chat',
     scaffoldKey: scaffoldKey,
     navigatorKey: navigatorKey,
   );
 
   showSnackBarWithKey(
     scaffoldKey,
-    "Pedido de chat recebido",
+    "O pedido de chat foi aceito",
     backgroundColor: TW3Colors.green.shade500,
   );
 }

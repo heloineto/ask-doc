@@ -11,7 +11,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var clientService = Provider.of<ClientService>(context);
-    bool isDoctor = clientService.user?["doctor"];
+    bool isDoctor = clientService.user?["doctor"] ?? false;
 
     return Drawer(
       child: ListView(

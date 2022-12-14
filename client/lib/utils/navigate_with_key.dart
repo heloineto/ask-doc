@@ -1,26 +1,22 @@
-import 'package:client/utils/navigate_with_key.dart';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-void sorting(
-  response, {
+void navigateWithKey(
+  String routeName, {
   required GlobalKey<ScaffoldMessengerState> scaffoldKey,
   required GlobalKey<NavigatorState> navigatorKey,
 }) {
-  if (!response["success"]) {
+  var navigatorState = navigatorKey.currentState;
+
+  if (navigatorState == null) {
     showSnackBarWithKey(
       scaffoldKey,
-      "O servidor não permitiu a operação de triagem",
+      "navigatorState é null",
       backgroundColor: TW3Colors.red.shade500,
     );
-
     return;
   }
 
-  navigateWithKey(
-    '/patient_queue',
-    scaffoldKey: scaffoldKey,
-    navigatorKey: navigatorKey,
-  );
+  navigatorState.pushNamed(routeName);
 }

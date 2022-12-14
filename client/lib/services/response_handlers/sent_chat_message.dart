@@ -1,22 +1,24 @@
-import 'package:client/utils/navigate_with_key.dart';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:tailwind_colors/tailwind_colors.dart';
 
-void receiveChatRequest(
+void sentChatMessage(
   response, {
   required GlobalKey<ScaffoldMessengerState> scaffoldKey,
   required GlobalKey<NavigatorState> navigatorKey,
 }) {
-  navigateWithKey(
-    '/chat_request',
-    scaffoldKey: scaffoldKey,
-    navigatorKey: navigatorKey,
-  );
+  if (response["success"]) {
+    showSnackBarWithKey(
+      scaffoldKey,
+      "Mensagem recebida",
+      backgroundColor: TW3Colors.emerald.shade500,
+    );
+    return;
+  }
 
   showSnackBarWithKey(
     scaffoldKey,
-    "Pedido de chat recebido",
-    backgroundColor: TW3Colors.green.shade500,
+    "Erro: Mensagem não recebida",
+    backgroundColor: TW3Colors.red.shade500,
   );
 }

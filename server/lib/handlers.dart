@@ -1,7 +1,9 @@
+import 'package:server/handlers/accept_chat_request.dart';
 import 'package:server/handlers/logout.dart';
 import 'package:server/handlers/patient_queue.dart';
 import 'package:server/handlers/register.dart';
 import 'package:server/handlers/login.dart';
+import 'package:server/handlers/send_chat_message.dart';
 import 'package:server/handlers/send_chat_request.dart';
 import 'package:server/handlers/sorting.dart';
 import 'package:server/handlers/next_patient.dart';
@@ -11,8 +13,10 @@ var handlers = {
   1: register,
   3: login,
   5: sendChatRequest,
+  6: sendChatMessage,
   9: sorting,
   10: patientQueue,
+  12: acceptChatRequest,
   14: logout,
   18: nextPatient,
 };

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:server/inter_client_messages.dart';
+import 'package:server/server.dart';
 import 'package:server/utils/output.dart';
 
 Future<Map> sendChatRequest(Map request) async {
@@ -9,11 +10,13 @@ Future<Map> sendChatRequest(Map request) async {
       toCpf: request["toCpf"],
       message: jsonEncode(
         {
-          "code": "1005",
+          "code": "155",
           "success": true,
         },
       ),
     );
+
+    chatConnections.add([request["toCpf"], request["fromCpf"]]);
 
     return {
       "code": 105,

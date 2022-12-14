@@ -1,3 +1,4 @@
+import 'package:client/chat/chat.dart';
 import 'package:client/chat_request/chat_request.dart';
 import 'package:client/home/home.dart';
 import 'package:client/login/login.dart';
@@ -14,5 +15,5 @@ var routes = {
   '/doctor_queue': (context) => const DoctorQueueScreen(),
   '/patient_queue': (context) => const PatientQueueScreen(),
   '/chat_request': (context) => const ChatRequestScreen(),
-  '/chat': (context) => const ChatRequestScreen(),
+  '/chat': (context) => const ChatScreen(),
 };

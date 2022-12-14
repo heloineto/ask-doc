@@ -5,6 +5,7 @@ import 'package:server/utils/input.dart';
 import 'package:server/utils/output.dart';
 
 Map<String, Map> clients = {};
+List<List<String>> chatConnections = [];
 
 void sendMessage(Socket socket, String message) {
   socket.writeln(message);
@@ -32,13 +33,16 @@ void run() async {
 }
 
 void handleConnection(Socket socket) {
-  String sockedId = '${socket.remoteAddress.address}:${socket.port}';
+  String sockedId = '${socket.remoteAddress.address}:${socket.remotePort}';
 
   clients[sockedId] = {"socket": socket};
 
   printReady("connection established", id: sockedId);
 
   socket.listen((event) async {
+    print("DEBUG - clients: $clients");
+    print("DEBUG - chatConnections: $chatConnections");
+
     String strRequest = String.fromCharCodes(event);
     printEvent("request: $strRequest", id: sockedId);
     dynamic request;
@@ -83,4 +87,20 @@ void handleConnection(Socket socket) {
     socket.close();
     clients.remove(sockedId);
   });
+}
+
+String getReceiverCpf(String senderCpf) {
+  for (int i = 0; i < chatConnections.length; i++) {
+    var connection = chatConnections[i];
+
+    if (connection[0] == senderCpf) {
+      return connection[1];
+    }
+    if (connection[1] == senderCpf) {
+      return connection[0];
+    }
+  }
+
+  printError("Couldn't find receiverCpf");
+  throw "Couldn't find receiverCpf";
 }

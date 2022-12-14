@@ -1,5 +1,6 @@
 import 'package:client/services/client_service.dart';
 import 'package:client/shared/button.dart';
+import 'package:client/shared/connection_button/connection_console.dart';
 import 'package:client/shared/text_icon_button.dart';
 import 'package:client/utils/show_snack_bar.dart';
 import 'package:client/utils/validations.dart';
@@ -98,6 +99,8 @@ class _ConnectionDialogState extends State<ConnectionDialog> {
                   icon: PhosphorIcons.wifiHigh,
                   text: 'Conectar',
                 ),
+          SizedBox(height: 20),
+          ConnectionConsole()
         ],
       ),
     );
