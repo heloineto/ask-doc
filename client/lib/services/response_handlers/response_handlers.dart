@@ -1,8 +1,8 @@
-import 'package:client/services/response_handlers/sent_chat_message.dart';
+import 'package:client/services/response_handlers/send_chat_message.dart';
 
 import './accept_chat_request.dart';
 import './receive_chat_request.dart';
-import './sent_chat_request.dart';
+import 'send_chat_request.dart';
 import './login.dart';
 import './logout.dart';
 import './register.dart';
@@ -21,5 +21,5 @@ var responseHandlers = {
   155: receiveChatRequest,
   112: acceptChatRequest,
   212: acceptChatRequest,
-  106: sentChatMessage,
+  106: sendChatMessage,
 };

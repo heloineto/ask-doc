@@ -37,6 +37,7 @@ bool sentToCpf({
     return false;
   }
 
+  printEvent("response: $message", id: toSockedId);
   sendMessage(toSocket, message);
   return true;
 }
